@@ -3,6 +3,7 @@ package io.josemmo.bukkit.plugin.utils;
 import io.josemmo.bukkit.plugin.YamipaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.logging.Level;
 
 /**
@@ -14,24 +15,8 @@ public class Logger {
     private final @Nullable String name;
 
     /**
-     * Get logger instance
-     * @param  name Logger name
-     * @return      Logger instance
-     */
-    public static @NotNull Logger getLogger(@NotNull String name) {
-        return new Logger(name);
-    }
-
-    /**
-     * Get logger instance
-     * @return Logger instance
-     */
-    public static @NotNull Logger getLogger() {
-        return new Logger(null);
-    }
-
-    /**
      * Class constructor
+     *
      * @param name Optional logger name
      */
     private Logger(@Nullable String name) {
@@ -39,7 +24,27 @@ public class Logger {
     }
 
     /**
+     * Get logger instance
+     *
+     * @param name Logger name
+     * @return Logger instance
+     */
+    public static @NotNull Logger getLogger(@NotNull String name) {
+        return new Logger(name);
+    }
+
+    /**
+     * Get logger instance
+     *
+     * @return Logger instance
+     */
+    public static @NotNull Logger getLogger() {
+        return new Logger(null);
+    }
+
+    /**
      * Log message
+     *
      * @param level   Record level
      * @param message Message
      * @param e       Optional throwable to log
@@ -68,6 +73,7 @@ public class Logger {
 
     /**
      * Log severe message
+     *
      * @param message Message
      * @param e       Throwable to log
      */
@@ -77,6 +83,7 @@ public class Logger {
 
     /**
      * Log warning message
+     *
      * @param message Message
      * @param e       Throwable to log
      */
@@ -86,6 +93,7 @@ public class Logger {
 
     /**
      * Log warning message
+     *
      * @param message Message
      */
     public void warning(@NotNull String message) {
@@ -94,6 +102,7 @@ public class Logger {
 
     /**
      * Log info message
+     *
      * @param message Message
      */
     public void info(@NotNull String message) {
@@ -102,6 +111,7 @@ public class Logger {
 
     /**
      * Log fine message
+     *
      * @param message Message
      */
     public void fine(@NotNull String message) {

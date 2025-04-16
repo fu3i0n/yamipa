@@ -16,6 +16,7 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,14 +32,15 @@ public class ImageRenderer implements Listener {
     private final Path configPath;
     private final boolean animateImages;
     private final int maxImageDimension;
-    private BukkitTask saveTask;
     private final AtomicBoolean hasConfigChanged = new AtomicBoolean(false);
     private final ConcurrentMap<WorldAreaId, Set<FakeImage>> images = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, Integer> imagesCountByPlayer = new ConcurrentHashMap<>();
     private final Map<Player, WorldAreaId> playersLocation = new HashMap<>();
+    private BukkitTask saveTask;
 
     /**
      * Class constructor
+     *
      * @param configPath        Path to configuration file
      * @param animateImages     Whether to animate images or not
      * @param maxImageDimension Maximum image dimension in blocks
@@ -51,6 +53,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Is animation enabled
+     *
      * @return Is animation enabled
      */
     public boolean isAnimationEnabled() {
@@ -59,6 +62,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get maximum image dimension
+     *
      * @return Maximum image dimension in blocks
      */
     public int getMaxImageDimension() {
@@ -132,7 +136,7 @@ public class ImageRenderer implements Listener {
                 int width = Math.abs(Integer.parseInt(row[7]));
                 int height = Math.abs(Integer.parseInt(row[8]));
                 Date placedAt = (row.length > 9 && !row[9].isEmpty()) ?
-                    new Date(Long.parseLong(row[9])*1000L) :
+                    new Date(Long.parseLong(row[9]) * 1000L) :
                     null;
                 UUID placedById = (row.length > 10 && !row[10].isEmpty()) ?
                     UUID.fromString(row[10]) :
@@ -199,6 +203,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Add image to renderer
+     *
      * @param image  Fake image instance
      * @param isInit TRUE if called during renderer startup, FALSE otherwise
      */
@@ -220,7 +225,7 @@ public class ImageRenderer implements Listener {
 
         // Increment count of placed images by player
         UUID placedById = image.getPlacedBy().getUniqueId();
-        imagesCountByPlayer.compute(placedById, (__, prev) -> (prev == null) ? 1 : prev+1);
+        imagesCountByPlayer.compute(placedById, (__, prev) -> (prev == null) ? 1 : prev + 1);
 
         // Spawn image in players nearby
         for (Player player : getPlayersInViewDistance(imageWorldAreaIds)) {
@@ -230,6 +235,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Add image to renderer
+     *
      * @param image Fake image instance
      */
     public void addImage(@NotNull FakeImage image) {
@@ -238,9 +244,10 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get image from location
-     * @param  location Fake image location
-     * @param  face     Fake image block face
-     * @return          Fake image instance or NULL if not found
+     *
+     * @param location Fake image location
+     * @param face     Fake image block face
+     * @return Fake image instance or NULL if not found
      */
     public @Nullable FakeImage getImage(@NotNull Location location, @NotNull BlockFace face) {
         WorldAreaId worldAreaId = WorldAreaId.fromLocation(location);
@@ -262,12 +269,13 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get images from area
-     * @param  world World instance
-     * @param  minX  Minimum X coordinate
-     * @param  maxX  Maximum X coordinate
-     * @param  minZ  Minimum Z coordinate
-     * @param  maxZ  Maximum Z coordinate
-     * @return       Set of found images
+     *
+     * @param world World instance
+     * @param minX  Minimum X coordinate
+     * @param maxX  Maximum X coordinate
+     * @param minZ  Minimum Z coordinate
+     * @param maxZ  Maximum Z coordinate
+     * @return Set of found images
      */
     public @NotNull Set<FakeImage> getImages(@NotNull World world, int minX, int maxX, int minZ, int maxZ) {
         Set<FakeImage> response = new HashSet<>();
@@ -285,6 +293,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Remove image from renderer
+     *
      * @param image Fake image instance
      */
     public void removeImage(@NotNull FakeImage image) {
@@ -308,11 +317,12 @@ public class ImageRenderer implements Listener {
 
         // Decrement count of placed images by player
         UUID placedById = image.getPlacedBy().getUniqueId();
-        imagesCountByPlayer.compute(placedById, (__, prev) -> (prev != null && prev > 1) ? prev-1 : null);
+        imagesCountByPlayer.compute(placedById, (__, prev) -> (prev != null && prev > 1) ? prev - 1 : null);
     }
 
     /**
      * Get set of players who have placed images
+     *
      * @return Offline players
      */
     public @NotNull Set<OfflinePlayer> getPlayersWithPlacedImages() {
@@ -321,6 +331,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get number of placed images
+     *
      * @return Number of placed images
      */
     public int size() {
@@ -331,6 +342,7 @@ public class ImageRenderer implements Listener {
      * Get number of placed images grouped by player
      * <p>
      * NOTE: Response is sorted by image count (descending)
+     *
      * @return Images count by player
      */
     public @NotNull Map<OfflinePlayer, Integer> getImagesCountByPlayer() {
@@ -347,8 +359,9 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get players in view distance of the provided world area IDs
-     * @param  ids World area IDs
-     * @return     Players inside those world areas
+     *
+     * @param ids World area IDs
+     * @return Players inside those world areas
      */
     private @NotNull Set<Player> getPlayersInViewDistance(@NotNull WorldAreaId[] ids) {
         Set<WorldAreaId> neighborhood = new HashSet<>();
@@ -368,8 +381,9 @@ public class ImageRenderer implements Listener {
 
     /**
      * Get images in view distance from world area ID
-     * @param  worldAreaId World area ID
-     * @return             Set of fake images
+     *
+     * @param worldAreaId World area ID
+     * @return Set of fake images
      */
     private @NotNull Set<FakeImage> getImagesInViewDistance(@NotNull WorldAreaId worldAreaId) {
         Set<FakeImage> response = new HashSet<>();
@@ -384,6 +398,7 @@ public class ImageRenderer implements Listener {
 
     /**
      * On player location change
+     *
      * @param player   Player instance
      * @param location New player location
      */

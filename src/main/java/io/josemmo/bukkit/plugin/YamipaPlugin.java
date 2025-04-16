@@ -1,17 +1,19 @@
 package io.josemmo.bukkit.plugin;
 
 import io.josemmo.bukkit.plugin.commands.ImageCommandBridge;
-import io.josemmo.bukkit.plugin.renderer.*;
+import io.josemmo.bukkit.plugin.renderer.FakeMap;
+import io.josemmo.bukkit.plugin.renderer.ImageRenderer;
+import io.josemmo.bukkit.plugin.renderer.ItemService;
 import io.josemmo.bukkit.plugin.storage.ImageStorage;
 import io.josemmo.bukkit.plugin.utils.Logger;
 import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.awt.Color;
+
+import java.awt.*;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -31,6 +33,7 @@ public class YamipaPlugin extends JavaPlugin {
 
     /**
      * Get plugin instance
+     *
      * @return Plugin instance
      */
     public static @NotNull YamipaPlugin getInstance() {
@@ -40,6 +43,7 @@ public class YamipaPlugin extends JavaPlugin {
 
     /**
      * Get image storage instance
+     *
      * @return Image storage instance
      */
     public @NotNull ImageStorage getStorage() {
@@ -49,6 +53,7 @@ public class YamipaPlugin extends JavaPlugin {
 
     /**
      * Get image renderer instance
+     *
      * @return Image renderer instance
      */
     public @NotNull ImageRenderer getRenderer() {
@@ -58,6 +63,7 @@ public class YamipaPlugin extends JavaPlugin {
 
     /**
      * Get internal tasks scheduler
+     *
      * @return Tasks scheduler
      */
     public @NotNull ScheduledExecutorService getScheduler() {
@@ -67,6 +73,7 @@ public class YamipaPlugin extends JavaPlugin {
 
     /**
      * Is verbose
+     *
      * @return Whether plugin is running in verbose mode
      */
     public boolean isVerbose() {

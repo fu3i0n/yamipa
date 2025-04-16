@@ -10,6 +10,7 @@ public class IntegerArgument extends Argument {
 
     /**
      * Integer Argument constructor
+     *
      * @param name Argument name
      * @param min  Minimum allowed value
      * @param max  Maximum allowed value
@@ -22,6 +23,7 @@ public class IntegerArgument extends Argument {
 
     /**
      * Integer Argument constructor
+     *
      * @param name Argument name
      * @param min  Minimum allowed value
      */
@@ -31,6 +33,7 @@ public class IntegerArgument extends Argument {
 
     /**
      * Integer Argument constructor
+     *
      * @param name Argument name
      */
     public IntegerArgument(@NotNull String name) {

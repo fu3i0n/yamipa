@@ -1,11 +1,13 @@
 # Yet Another Minecraft Image Placing Addon
+
 [![Tests](https://github.com/josemmo/yamipa/workflows/Tests/badge.svg)](https://github.com/josemmo/yamipa/actions)
 [![Latest Version](https://img.shields.io/github/v/release/josemmo/yamipa)](https://github.com/josemmo/yamipa/releases/latest)
 ![Minecraft Version](https://img.shields.io/badge/minecraft-%3E%3D1.16-blueviolet)
 [![bStats Servers](https://img.shields.io/bstats/servers/10243)](https://bstats.org/plugin/bukkit/Yamipa/10243)
 [![License](https://img.shields.io/github/license/josemmo/yamipa)](LICENSE)
 
-Yamipa is a Spigot plugin that allows players to place images (even **animated**!) on any surface in your Minecraft server
+Yamipa is a Spigot plugin that allows players to place images (even **animated**!) on any surface in your Minecraft
+server
 without having to install any local client mod.
 
 It is designed with performance and compatibility in mind, so even the most low-specs servers should be able to run it.
@@ -18,10 +20,12 @@ It is designed with performance and compatibility in mind, so even the most low-
 </p>
 
 ## Installation
+
 Download the JAR file for the [latest release](https://github.com/josemmo/yamipa/releases/latest) and copy it to the
 "plugins" directory of your Minecraft server as you'll do with any other plugin. That's it!
 
 ### Requirements
+
 Before installing Yamipa make sure you meet the following requirements:
 
 - CraftBukkit, Spigot or PaperMC 1.16 or higher
@@ -30,24 +34,26 @@ Before installing Yamipa make sure you meet the following requirements:
 Here are the Minecraft distributions where Yamipa should be able to run:
 | Minecraft version | CraftBukkit | Spigot | PaperMC |
 |------------------:|:-----------:|:------:|:-------:|
-|            1.16.x |     ✅      |   ✅    |   ✅    |
-|     1.17 & 1.17.1 |     ✅      |   ✅    |   ✅    |
-|     1.18 & 1.18.x |     ✅      |   ✅    |   ✅    |
-|     1.19 & 1.19.x |     ✅      |   ✅    |   ✅    |
-|     1.20 & 1.20.x |     ✅      |   ✅    |   ✅    |
-|     1.21 & 1.21.x |     ✅      |   ✅    |   ✅    |
+| 1.16.x | ✅ | ✅ | ✅ |
+| 1.17 & 1.17.1 | ✅ | ✅ | ✅ |
+| 1.18 & 1.18.x | ✅ | ✅ | ✅ |
+| 1.19 & 1.19.x | ✅ | ✅ | ✅ |
+| 1.20 & 1.20.x | ✅ | ✅ | ✅ |
+| 1.21 & 1.21.x | ✅ | ✅ | ✅ |
 
 ## Configuration
+
 Yamipa is ready-to-go right out of the box. By default, it creates the following files and directories under the
 `plugins/YamipaPlugin` directory:
 
 - `cache`: A directory containing cached images to speed up the rendering process. You shouldn't modify its contents.
 - `images`: **This is the directory where you put the image files** you want to place in your Minecraft world.
 - `images.dat`: A file holding the list and properties (e.g. coordinates) of all placed images in your server. You
-shouldn't modify its contents.
+  shouldn't modify its contents.
 
 You can change the path of these files by creating a `config.yml` file in the plugin configuration directory.
 Here are the default configuration values if you don't specify them:
+
 ```yaml
 verbose: false           # Set to "true" to enable more verbose logging
 animate-images: true     # Set to "false" to disable GIF support
@@ -62,6 +68,7 @@ For more information on how to set a different `allowed-paths` or `max-image-dim
 [Player variables](#player-variables) section.
 
 ### Allowed paths
+
 The variable `allowed-paths` is a regular expression that determines whether a player is allowed to see or download
 an image file. If the desired path relative to the images directory matches this expression, then the player is allowed
 to continue.
@@ -79,6 +86,7 @@ In addition, you can make use of the following special tokens:
 
 For example, if you want every player in your server to have their own subdirectory for storing files that only they
 can access, plus a shared public directory, you can use the following `allowed-paths` value:
+
 ```regexp
 ^(private/#player#|public)/
 ```
@@ -90,11 +98,13 @@ That way, the player "john" can see the image file at "private/john/something.jp
 > However, special tokens will always match in non-player contexts (e.g., "#player#" will be interpreted as ".+").
 
 ### bStats
+
 This library uses bStats to anonymously report the number of installs. If you don't like this, feel free to
 disable it at any time by adding `enabled: false` to the
 [bStats configuration file](https://bstats.org/getting-started#:~:text=Disabling%20bStats) (it's ok, no hard feelings).
 
 ## Usage
+
 This plugin adds the following commands:
 
 - `/image clear <x z world> <r> [<placed-by>]`: Remove all placed images in a radius of `r` blocks around an origin.
@@ -132,6 +142,7 @@ This plugin adds the following commands:
   `/image clear 0 0 world 9999999 00000000-0000-0000-0000-000000000000`
 
 ## Permissions
+
 If you want more granular control over the features exposed to players, permissions are the way to go!
 
 Yamipa defines the following permissions:
@@ -160,6 +171,7 @@ such as [LuckPerms](https://luckperms.net/) or [GroupManager](https://elgarl.git
 Both these plugins have been tested to work with Yamipa, although any similar one should work just fine.
 
 ## Player variables
+
 Some permission plugins like LuckPerms allow server operators to assign
 [key-value pairs](https://luckperms.net/wiki/Meta-Commands) to entities as if they were permissions.
 This is useful for granting different capabilities to different players or groups.
@@ -173,6 +185,7 @@ players:
 | `yamipa-max-image-dimension` | `max-image-dimension` | Maximum width or height of images and image items issued by this player or group  |
 
 For example, if you want to limit the image size to 5x5 blocks just for the "test" player, you can run this command:
+
 ```sh
 # Using LuckPerms
 /lp user test meta set yamipa-max-image-dimension 5
@@ -182,6 +195,7 @@ For example, if you want to limit the image size to 5x5 blocks just for the "tes
 ```
 
 ## Protecting areas
+
 In large servers, letting your players place and remove images wherever they want might not be the most sensible idea.
 For those cases, Yamipa is compatible with other Bukkit plugins that allow creating and managing world areas.
 If you have one or more of such plugins, Yamipa will automatically apply permissions accordingly and only let players
@@ -195,6 +209,7 @@ The supported plugins are:
 - [Lands](https://www.spigotmc.org/resources/53313/)
 
 ## Flags
+
 Images from this plugin have a set of boolean attributes called "flags" that modify its behavior. Possible values are:
 
 - `ANIM` (animatable): Whether an image should be animated or not, useful when you don't want a GIF image to play.
@@ -210,6 +225,7 @@ To add a flag to the default ones use "+{FLAG_NAME}" (e.g. `+GLOW`), and to remo
 You can modify multiple flags separating them with commas (e.g. `+GLOW,-ANIM`).
 
 ## How does it work?
+
 As you may have already guessed, Minecraft does not support the placing of image files.
 Yamipa bypasses this limitation by using two built-in features (**item frames and maps**) to render custom images.
 
@@ -229,4 +245,5 @@ milliseconds.
 > Unique means if the same image with same dimensions is placed multiple times it only counts as one instance.
 
 ## License
+
 Yamipa is licensed under the [MIT License](LICENSE).

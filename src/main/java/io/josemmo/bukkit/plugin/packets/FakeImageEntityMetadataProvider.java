@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityMetadataProvider;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
-import io.josemmo.bukkit.plugin.utils.Internals;
 import org.bukkit.Rotation;
 import org.bukkit.inventory.ItemStack;
 

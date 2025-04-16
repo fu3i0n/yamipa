@@ -6,8 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.nio.file.*;
-import java.util.*;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -21,13 +25,16 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ImageStorage extends FileSystemWatcher {
     private static final Logger LOGGER = Logger.getLogger("ImageStorage");
-    /** Map of registered files indexed by filename */
+    /**
+     * Map of registered files indexed by filename
+     */
     private final SortedMap<String, ImageFile> files = new TreeMap<>();
     private final Path cachePath;
     private final String allowedPaths;
 
     /**
      * Class constructor
+     *
      * @param basePath     Path to directory containing the images
      * @param cachePath    Path to directory containing the cached image maps
      * @param allowedPaths Allowed paths pattern
@@ -40,6 +47,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Get base path
+     *
      * @return Base path
      */
     public @NotNull Path getBasePath() {
@@ -48,6 +56,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Get cache path
+     *
      * @return Cache path
      */
     public @NotNull Path getCachePath() {
@@ -56,6 +65,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Start service
+     *
      * @throws RuntimeException if failed to start watch service
      */
     @Override
@@ -83,6 +93,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Get number of images
+     *
      * @return Number of images
      */
     public synchronized int size() {
@@ -91,8 +102,9 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Get image filenames
-     * @param  sender Sender instance to filter only allowed images
-     * @return        Allowed images
+     *
+     * @param sender Sender instance to filter only allowed images
+     * @return Allowed images
      */
     public synchronized @NotNull List<String> getFilenames(@NotNull CommandSender sender) {
         List<String> response = new ArrayList<>();
@@ -106,9 +118,10 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Is path allowed
-     * @param  path   Path instance
-     * @param  sender Sender instance
-     * @return        Whether sender is allowed to access path
+     *
+     * @param path   Path instance
+     * @param sender Sender instance
+     * @return Whether sender is allowed to access path
      */
     public boolean isPathAllowed(@NotNull Path path, @NotNull CommandSender sender) {
         return isPathAllowed(pathToFilename(path), sender);
@@ -116,9 +129,10 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Is path allowed
-     * @param  path   Path relative to {@link ImageStorage#basePath}
-     * @param  sender Sender instance
-     * @return        Whether sender is allowed to access path
+     *
+     * @param path   Path relative to {@link ImageStorage#basePath}
+     * @param sender Sender instance
+     * @return Whether sender is allowed to access path
      */
     public boolean isPathAllowed(@NotNull String path, @NotNull CommandSender sender) {
         // Find allowed paths pattern
@@ -154,8 +168,9 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Get image by filename
-     * @param  filename Filename
-     * @return          Image instance or NULL if not found
+     *
+     * @param filename Filename
+     * @return Image instance or NULL if not found
      */
     public synchronized @Nullable ImageFile get(@NotNull String filename) {
         return files.get(filename);
@@ -163,8 +178,9 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * Convert path to filename
-     * @param  path File path
-     * @return      Relative path used for indexing
+     *
+     * @param path File path
+     * @return Relative path used for indexing
      */
     private @NotNull String pathToFilename(@NotNull Path path) {
         return basePath.relativize(path).toString().replaceAll("\\\\", "/");
@@ -172,6 +188,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * On file created
+     *
      * @param path File path
      */
     protected synchronized void onFileCreated(@NotNull Path path) {
@@ -184,6 +201,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * On file modified
+     *
      * @param path File path
      */
     protected synchronized void onFileModified(@NotNull Path path) {
@@ -197,6 +215,7 @@ public class ImageStorage extends FileSystemWatcher {
 
     /**
      * On file deleted
+     *
      * @param path File path
      */
     protected synchronized void onFileDeleted(@NotNull Path path) {

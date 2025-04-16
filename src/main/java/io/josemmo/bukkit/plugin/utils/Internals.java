@@ -2,8 +2,6 @@ package io.josemmo.bukkit.plugin.utils;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
-import com.github.retrooper.packetevents.protocol.ProtocolVersion;
-import com.github.retrooper.packetevents.util.PEVersion;
 import com.mojang.brigadier.CommandDispatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -11,6 +9,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -64,6 +63,7 @@ public class Internals {
 
     /**
      * Get Brigadier command dispatcher instance
+     *
      * @return Command dispatcher instance
      */
     public static @NotNull CommandDispatcher<?> getDispatcher() {
@@ -72,6 +72,7 @@ public class Internals {
 
     /**
      * Get Bukkit command map instance
+     *
      * @return Command map instance
      */
     public static @NotNull CommandMap getCommandMap() {
@@ -80,8 +81,9 @@ public class Internals {
 
     /**
      * Get Bukkit sender from Brigadier context source
-     * @param  source Brigadier command context source
-     * @return        Command sender instance
+     *
+     * @param source Brigadier command context source
+     * @return Command sender instance
      */
     public static @NotNull CommandSender getBukkitSender(@NotNull Object source) {
         try {

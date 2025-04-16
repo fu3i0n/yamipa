@@ -7,11 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.CompletableFuture;
 
 public class WorldArgument extends StringArgument {
     /**
      * World Argument constructor
+     *
      * @param name Argument name
      */
     public WorldArgument(@NotNull String name) {

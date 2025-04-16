@@ -1,8 +1,8 @@
 name: Yamipa #${project.name}
 version: 1.0 #${project.version}
 main: io.josemmo.bukkit.plugin.YamipaPlugin
-api-version: 1.16
-depend: [packetevents]
+api-version: 1.21
+depend: [ packetevents ]
 softdepend:
   - BentoBox
   - GriefPrevention

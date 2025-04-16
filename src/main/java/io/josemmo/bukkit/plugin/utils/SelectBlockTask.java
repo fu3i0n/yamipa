@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class SelectBlockTask {
 
     /**
      * Class constructor
+     *
      * @param player Target player instance
      */
     public SelectBlockTask(@NotNull Player player) {
@@ -40,6 +42,7 @@ public class SelectBlockTask {
 
     /**
      * Set on success callback
+     *
      * @param callback Success callback
      */
     public void onSuccess(@Nullable BiConsumer<@NotNull Location, @NotNull BlockFace> callback) {
@@ -48,6 +51,7 @@ public class SelectBlockTask {
 
     /**
      * Set on failure (e.g. canceled) callback
+     *
      * @param callback Failure callback
      */
     public void onFailure(@Nullable Runnable callback) {
@@ -56,6 +60,7 @@ public class SelectBlockTask {
 
     /**
      * Run task
+     *
      * @param helpMessage Help message for the player
      */
     public void run(@NotNull String helpMessage) {

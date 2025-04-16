@@ -4,17 +4,11 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBundle;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import io.josemmo.bukkit.plugin.YamipaPlugin;
 import io.josemmo.bukkit.plugin.utils.Internals;
 import io.josemmo.bukkit.plugin.utils.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 
 public abstract class FakeEntity {
     private static final Logger LOGGER = Logger.getLogger("FakeEntity");
@@ -25,6 +19,7 @@ public abstract class FakeEntity {
      * Try to sleep
      * <p>
      * NOTE: Will wait synchronously, blocking the invoker thread
+     *
      * @param ms Delay in milliseconds
      */
     protected static void tryToSleep(long ms) {
@@ -37,6 +32,7 @@ public abstract class FakeEntity {
 
     /**
      * Try to send packet
+     *
      * @param player Player who will receive the packet
      * @param packet Packet to send
      */
@@ -52,6 +48,7 @@ public abstract class FakeEntity {
 
     /**
      * Try to send several packets
+     *
      * @param player  Player who will receive the packets
      * @param packets Packets to send
      */
@@ -72,6 +69,7 @@ public abstract class FakeEntity {
 
     /**
      * Try to run asynchronous task
+     *
      * @param callback Callback to execute
      */
     protected static void tryToRunAsyncTask(@NotNull Runnable callback) {

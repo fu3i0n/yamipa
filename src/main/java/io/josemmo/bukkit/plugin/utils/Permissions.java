@@ -25,6 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -77,9 +78,10 @@ public class Permissions {
 
     /**
      * Get player variable
-     * @param  variable Variable name (key)
-     * @param  player   Player instance
-     * @return          Variable value or NULL if not found
+     *
+     * @param variable Variable name (key)
+     * @param player   Player instance
+     * @return Variable value or NULL if not found
      */
     public static @Nullable String getVariable(@NotNull String variable, @NotNull Player player) {
         if (luckPerms != null) {
@@ -98,9 +100,10 @@ public class Permissions {
 
     /**
      * Can build at this block
-     * @param  player   Player instance
-     * @param  location Block location
-     * @return          Whether player can build or not
+     *
+     * @param player   Player instance
+     * @param location Block location
+     * @return Whether player can build or not
      */
     public static boolean canBuild(@NotNull Player player, @NotNull Location location) {
         return queryWorldGuard(player, location, true)
@@ -111,9 +114,10 @@ public class Permissions {
 
     /**
      * Can destroy this block
-     * @param  player   Player instance
-     * @param  location Block location
-     * @return          Whether player can destroy or not
+     *
+     * @param player   Player instance
+     * @param location Block location
+     * @return Whether player can destroy or not
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canDestroy(@NotNull Player player, @NotNull Location location) {

@@ -2,6 +2,7 @@ package io.josemmo.bukkit.plugin.storage;
 
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 public class SynchronizedFileStream extends RandomAccessFile {
     /**
      * Class constructor
+     *
      * @param path     Path to file
      * @param readOnly Whether to open stream in read-only mode
      * @throws IOException if failed to acquire lock
@@ -27,6 +29,7 @@ public class SynchronizedFileStream extends RandomAccessFile {
 
     /**
      * Wait for lock to be released
+     *
      * @param readOnly Whether to acquire read-only (shared) lock
      */
     @Blocking

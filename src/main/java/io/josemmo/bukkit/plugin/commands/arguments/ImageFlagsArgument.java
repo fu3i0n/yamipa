@@ -8,6 +8,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.josemmo.bukkit.plugin.renderer.FakeImage;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
@@ -17,6 +18,7 @@ public class ImageFlagsArgument extends Argument {
 
     /**
      * Image File Argument constructor
+     *
      * @param name         Argument name
      * @param defaultFlags Default flags
      */
@@ -36,10 +38,10 @@ public class ImageFlagsArgument extends Argument {
         int lastIndex = Collections.max(
             Arrays.asList(input.lastIndexOf(","), input.lastIndexOf("+"), input.lastIndexOf("-"))
         );
-        input = input.substring(0, lastIndex+1);
+        input = input.substring(0, lastIndex + 1);
 
         // Add suggestions
-        String[] values = new String[] {"ANIM", "REMO", "DROP", "GLOW"};
+        String[] values = new String[]{"ANIM", "REMO", "DROP", "GLOW"};
         for (String value : values) {
             builder.suggest(input + value);
         }

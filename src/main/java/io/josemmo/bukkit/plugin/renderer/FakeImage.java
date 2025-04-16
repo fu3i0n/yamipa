@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -24,14 +25,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 
 public class FakeImage extends FakeEntity {
-    private static final Logger LOGGER = Logger.getLogger("FakeImage");
-
     // Image constants
     public static final int MAX_STEPS = 500; // For animated images
     public static final int MIN_DELAY = 1; // Minimum step delay in 50ms intervals (50ms / 50ms)
     public static final int MAX_DELAY = 50; // Maximum step delay in 50ms intervals (5000ms / 50ms)
     public static final UUID UNKNOWN_PLAYER_ID = new UUID(0, 0);
-
     // Flags
     public static final int FLAG_ANIMATABLE = 1; // Whether image is allowed to animate multiple steps
     public static final int FLAG_REMOVABLE = 2; // Whether image can be removed by a player using the interact button
@@ -39,7 +37,7 @@ public class FakeImage extends FakeEntity {
     public static final int FLAG_GLOWING = 8; // Whether image glows in the dark
     public static final int DEFAULT_PLACE_FLAGS = FLAG_ANIMATABLE;
     public static final int DEFAULT_GIVE_FLAGS = FLAG_ANIMATABLE | FLAG_REMOVABLE | FLAG_DROPPABLE;
-
+    private static final Logger LOGGER = Logger.getLogger("FakeImage");
     // Instance properties
     private final String filename;
     private final Location location;
@@ -65,75 +63,17 @@ public class FakeImage extends FakeEntity {
     private int currentStep = -1; // Current animation step
 
     /**
-     * Get image rotation from player eyesight
-     * @param  face     Image block face
-     * @param  location Player eye location
-     * @return          Image rotation
-     */
-    public static @NotNull Rotation getRotationFromPlayerEyesight(@NotNull BlockFace face, @NotNull Location location) {
-        // Images placed on N/S/E/W faces never have rotation
-        if (face != BlockFace.UP && face != BlockFace.DOWN) {
-            return Rotation.NONE;
-        }
-
-        // Top and down images depend on where player is looking
-        BlockFace eyeDirection = DirectionUtils.getCardinalDirection(location.getYaw());
-        switch (eyeDirection) {
-            case EAST:
-                return (face == BlockFace.DOWN) ? Rotation.CLOCKWISE_135 : Rotation.CLOCKWISE_45;
-            case SOUTH:
-                return Rotation.CLOCKWISE;
-            case WEST:
-                return (face == BlockFace.DOWN) ? Rotation.CLOCKWISE_45 : Rotation.CLOCKWISE_135;
-            default:
-                return Rotation.NONE;
-        }
-    }
-
-    /**
-     * Get maximum image dimension
-     * @param  sender Sender instance
-     * @return        Maximum image dimension in blocks
-     */
-    public static int getMaxImageDimension(@NotNull CommandSender sender) {
-        if (sender instanceof Player) {
-            String rawValue = Permissions.getVariable("yamipa-max-image-dimension", (Player) sender);
-            if (rawValue != null) {
-                try {
-                    return Integer.parseInt(rawValue);
-                } catch (NumberFormatException __) {
-                    LOGGER.warning("Max. image dimension for " + sender + " is not a valid integer: \"" + rawValue + "\"");
-                }
-            }
-        }
-        return YamipaPlugin.getInstance().getRenderer().getMaxImageDimension();
-    }
-
-    /**
-     * Get proportional height
-     * @param  sizeInPixels Image file dimension in pixels
-     * @param  sender       Sender instance
-     * @param  width        Desired width in blocks
-     * @return              Height in blocks (capped at maximum image dimension for sender)
-     */
-    public static int getProportionalHeight(@NotNull Dimension sizeInPixels, @NotNull CommandSender sender, int width) {
-        float imageRatio = (float) sizeInPixels.height / sizeInPixels.width;
-        int height = Math.round(width * imageRatio);
-        height = Math.min(height, getMaxImageDimension(sender));
-        return height;
-    }
-
-    /**
      * Class constructor
-     * @param filename  Image filename
-     * @param location  Top-left corner where image will be placed
-     * @param face      Block face
-     * @param rotation  Image rotation
-     * @param width     Width in blocks
-     * @param height    Height in blocks
-     * @param placedAt  Placed at
-     * @param placedBy  Placed by
-     * @param flags     Flags
+     *
+     * @param filename Image filename
+     * @param location Top-left corner where image will be placed
+     * @param face     Block face
+     * @param rotation Image rotation
+     * @param width    Width in blocks
+     * @param height   Height in blocks
+     * @param placedAt Placed at
+     * @param placedBy Placed by
+     * @param flags    Flags
      */
     public FakeImage(
         @NotNull String filename,
@@ -191,7 +131,70 @@ public class FakeImage extends FakeEntity {
     }
 
     /**
+     * Get image rotation from player eyesight
+     *
+     * @param face     Image block face
+     * @param location Player eye location
+     * @return Image rotation
+     */
+    public static @NotNull Rotation getRotationFromPlayerEyesight(@NotNull BlockFace face, @NotNull Location location) {
+        // Images placed on N/S/E/W faces never have rotation
+        if (face != BlockFace.UP && face != BlockFace.DOWN) {
+            return Rotation.NONE;
+        }
+
+        // Top and down images depend on where player is looking
+        BlockFace eyeDirection = DirectionUtils.getCardinalDirection(location.getYaw());
+        switch (eyeDirection) {
+            case EAST:
+                return (face == BlockFace.DOWN) ? Rotation.CLOCKWISE_135 : Rotation.CLOCKWISE_45;
+            case SOUTH:
+                return Rotation.CLOCKWISE;
+            case WEST:
+                return (face == BlockFace.DOWN) ? Rotation.CLOCKWISE_45 : Rotation.CLOCKWISE_135;
+            default:
+                return Rotation.NONE;
+        }
+    }
+
+    /**
+     * Get maximum image dimension
+     *
+     * @param sender Sender instance
+     * @return Maximum image dimension in blocks
+     */
+    public static int getMaxImageDimension(@NotNull CommandSender sender) {
+        if (sender instanceof Player) {
+            String rawValue = Permissions.getVariable("yamipa-max-image-dimension", (Player) sender);
+            if (rawValue != null) {
+                try {
+                    return Integer.parseInt(rawValue);
+                } catch (NumberFormatException __) {
+                    LOGGER.warning("Max. image dimension for " + sender + " is not a valid integer: \"" + rawValue + "\"");
+                }
+            }
+        }
+        return YamipaPlugin.getInstance().getRenderer().getMaxImageDimension();
+    }
+
+    /**
+     * Get proportional height
+     *
+     * @param sizeInPixels Image file dimension in pixels
+     * @param sender       Sender instance
+     * @param width        Desired width in blocks
+     * @return Height in blocks (capped at maximum image dimension for sender)
+     */
+    public static int getProportionalHeight(@NotNull Dimension sizeInPixels, @NotNull CommandSender sender, int width) {
+        float imageRatio = (float) sizeInPixels.height / sizeInPixels.width;
+        int height = Math.round(width * imageRatio);
+        height = Math.min(height, getMaxImageDimension(sender));
+        return height;
+    }
+
+    /**
      * Get image filename
+     *
      * @return Image filename
      */
     public @NotNull String getFilename() {
@@ -200,6 +203,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image file instance
+     *
      * @return Image file instance or NULL if not found
      */
     public @Nullable ImageFile getFile() {
@@ -208,6 +212,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get top-left corner of image
+     *
      * @return Location instance
      */
     public @NotNull Location getLocation() {
@@ -216,6 +221,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image block face
+     *
      * @return Image block face
      */
     public @NotNull BlockFace getBlockFace() {
@@ -224,6 +230,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image rotation
+     *
      * @return Image rotation
      */
     public @NotNull Rotation getRotation() {
@@ -232,6 +239,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image width in blocks
+     *
      * @return Image width
      */
     public int getWidth() {
@@ -240,6 +248,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image height in blocks
+     *
      * @return Image height
      */
     public int getHeight() {
@@ -248,6 +257,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get placed at date
+     *
      * @return Placed at date
      */
     public @Nullable Date getPlacedAt() {
@@ -256,6 +266,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get placed by player
+     *
      * @return Placed by player instance
      */
     public @NotNull OfflinePlayer getPlacedBy() {
@@ -264,6 +275,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get flags
+     *
      * @return Flags
      */
     public int getFlags() {
@@ -272,8 +284,9 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Has flag
-     * @param  flag Flag to check
-     * @return      Whether instance has given flag or not
+     *
+     * @param flag Flag to check
+     * @return Whether instance has given flag or not
      */
     public boolean hasFlag(int flag) {
         return ((flags & flag) == flag);
@@ -281,6 +294,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get image delay
+     *
      * @return Image delay in 50ms intervals
      */
     public int getDelay() {
@@ -289,13 +303,14 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get all block locations covered by the image
+     *
      * @return Array of location instances
      */
     public @NotNull Location[] getAllLocations() {
-        Location[] locations = new Location[width*height];
-        for (int row=0; row<height; row++) {
-            for (int col=0; col<width; col++) {
-                locations[row*width + col] = location.clone().add(getLocationVector.apply(col, row));
+        Location[] locations = new Location[width * height];
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                locations[row * width + col] = location.clone().add(getLocationVector.apply(col, row));
             }
         }
         return locations;
@@ -303,22 +318,24 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Get the world area IDs where this image is located
+     *
      * @return Array of world area IDs
      */
     public @NotNull WorldAreaId[] getWorldAreaIds() {
         Set<WorldAreaId> corners = new HashSet<>();
         corners.add(WorldAreaId.fromLocation(location));
-        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(width-1, 0))));
-        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(0, height-1))));
-        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(width-1, height-1))));
+        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(width - 1, 0))));
+        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(0, height - 1))));
+        corners.add(WorldAreaId.fromLocation(location.clone().add(getLocationVector.apply(width - 1, height - 1))));
         return corners.toArray(new WorldAreaId[0]);
     }
 
     /**
      * Verify whether a point is contained in the image plane
-     * @param  location Location instance (only for coordinates)
-     * @param  face     Block face
-     * @return          TRUE for contained, FALSE otherwise
+     *
+     * @param location Location instance (only for coordinates)
+     * @param face     Block face
+     * @return TRUE for contained, FALSE otherwise
      */
     @SuppressWarnings("RedundantIfStatement")
     public boolean contains(@NotNull Location location, @NotNull BlockFace face) {
@@ -329,7 +346,7 @@ public class FakeImage extends FakeEntity {
 
         // Get sorted plane edges
         Location topLeft = this.location;
-        Location bottomRight = this.location.clone().add(getLocationVector.apply(width-1, height-1));
+        Location bottomRight = this.location.clone().add(getLocationVector.apply(width - 1, height - 1));
         int[] x = new int[]{topLeft.getBlockX(), bottomRight.getBlockX()};
         int[] y = new int[]{topLeft.getBlockY(), bottomRight.getBlockY()};
         int[] z = new int[]{topLeft.getBlockZ(), bottomRight.getBlockZ()};
@@ -338,7 +355,7 @@ public class FakeImage extends FakeEntity {
         Arrays.sort(z);
 
         // Is point located inside the plane limits?
-        int[] point = new int[] {location.getBlockX(), location.getBlockY(), location.getBlockZ()};
+        int[] point = new int[]{location.getBlockX(), location.getBlockY(), location.getBlockZ()};
         if (point[0] < x[0] || point[0] > x[1]) return false;
         if (point[1] < y[0] || point[1] > y[1]) return false;
         if (point[2] < z[0] || point[2] > z[1]) return false;
@@ -350,6 +367,7 @@ public class FakeImage extends FakeEntity {
      * <p>
      * Defines a single-use listener that gets called when the fake image finishes loading,
      * at which point the listener is automatically unregistered.
+     *
      * @param onLoadedListener Listener
      */
     public void setOnLoadedListener(@NotNull Runnable onLoadedListener) {
@@ -375,12 +393,12 @@ public class FakeImage extends FakeEntity {
         numOfSteps = maps[0][0].length;
 
         // Generate frames
-        FakeItemFrame[] newFrames = new FakeItemFrame[width*height];
+        FakeItemFrame[] newFrames = new FakeItemFrame[width * height];
         boolean glowing = hasFlag(FLAG_GLOWING);
-        for (int col=0; col<width; col++) {
-            for (int row=0; row<height; row++) {
+        for (int col = 0; col < width; col++) {
+            for (int row = 0; row < height; row++) {
                 Location frameLocation = location.clone().add(getLocationVector.apply(col, row));
-                newFrames[height*col+row] = new FakeItemFrame(frameLocation, face, rotation, glowing, maps[col][row]);
+                newFrames[height * col + row] = new FakeItemFrame(frameLocation, face, rotation, glowing, maps[col][row]);
             }
         }
         frames = newFrames;
@@ -392,7 +410,7 @@ public class FakeImage extends FakeEntity {
             task = plugin.getScheduler().scheduleAtFixedRate(
                 this::nextStep,
                 0,
-                delay*50L,
+                delay * 50L,
                 TimeUnit.MILLISECONDS
             );
             LOGGER.fine("Spawned animation task for FakeImage#(" + location + "," + face + ")");
@@ -407,6 +425,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Spawn image for a player
+     *
      * @param player Player instance
      */
     public void spawn(@NotNull Player player) {
@@ -440,6 +459,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Spawn image for a player (once instance has been loaded)
+     *
      * @param player Player instance
      */
     private void spawnOnceLoaded(@NotNull Player player) {
@@ -469,6 +489,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Destroy image a player
+     *
      * @param player Player instance or NULL for all observing players
      */
     public void destroy(@Nullable Player player) {
@@ -506,6 +527,7 @@ public class FakeImage extends FakeEntity {
 
     /**
      * Notify player quit from server
+     *
      * @param player Player instance
      */
     public void notifyPlayerQuit(@NotNull Player player) {

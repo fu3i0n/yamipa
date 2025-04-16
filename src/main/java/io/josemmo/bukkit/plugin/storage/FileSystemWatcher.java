@@ -4,6 +4,7 @@ import com.sun.nio.file.ExtendedWatchEventModifier;
 import io.josemmo.bukkit.plugin.utils.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
@@ -23,12 +24,15 @@ public abstract class FileSystemWatcher {
     private static final String PROBE_FILENAME = ".inotify_test";
     private static final Logger LOGGER = Logger.getLogger("FileSystemWatcher");
     protected final Path basePath;
-    /** Map of existing directories with the files they contain and their last modification timestamps */
+    /**
+     * Map of existing directories with the files they contain and their last modification timestamps
+     */
     private final SortedMap<Path, Map<Path, Long>> fileTree = new TreeMap<>();
     private @Nullable Thread watcherThread;
 
     /**
      * Class constructor
+     *
      * @param basePath Base path
      */
     public FileSystemWatcher(@NotNull Path basePath) {
@@ -37,6 +41,7 @@ public abstract class FileSystemWatcher {
 
     /**
      * Start watcher
+     *
      * @throws RuntimeException if failed to start
      */
     protected void start() throws RuntimeException {
@@ -65,18 +70,21 @@ public abstract class FileSystemWatcher {
 
     /**
      * On file created
+     *
      * @param path File path
      */
     protected abstract void onFileCreated(@NotNull Path path);
 
     /**
      * On file modified
+     *
      * @param path File path
      */
     protected abstract void onFileModified(@NotNull Path path);
 
     /**
      * On file deleted
+     *
      * @param path File path
      */
     protected abstract void onFileDeleted(@NotNull Path path);
@@ -150,6 +158,7 @@ public abstract class FileSystemWatcher {
 
         /**
          * Is inotify supported
+         *
          * @return Whether inotify is supported
          */
         @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -225,6 +234,7 @@ public abstract class FileSystemWatcher {
 
         /**
          * Handle watch event
+         *
          * @param watchService Watch service
          * @param path         File or directory path
          * @param kind         Event kind
@@ -268,6 +278,7 @@ public abstract class FileSystemWatcher {
 
         /**
          * Register directory
+         *
          * @param watchService Watch service
          * @param path         Directory path
          */
@@ -297,6 +308,7 @@ public abstract class FileSystemWatcher {
 
         /**
          * Unregister directory
+         *
          * @param path Directory path
          */
         private void unregisterDirectory(@NotNull Path path) {

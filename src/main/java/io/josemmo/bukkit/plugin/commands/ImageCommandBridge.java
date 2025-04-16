@@ -17,11 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class ImageCommandBridge {
     private static final String COMMAND_NAME = "yamipa";
-    private static final String[] COMMAND_ALIASES = new String[] {"image", "images"};
+    private static final String[] COMMAND_ALIASES = new String[]{"image", "images"};
     private static final Logger LOGGER = Logger.getLogger("ImageCommandBridge");
 
     /**
      * Register command
+     *
      * @param plugin Plugin instance
      */
     @SuppressWarnings({"rawtypes", "unchecked"})

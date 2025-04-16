@@ -1,14 +1,14 @@
-import { placeBlockOnTheFloor, startBot } from './src/bot.js'
-import { wait } from './src/common.js'
-import { getRconClient, waitForServer } from './src/rcon.js'
+import {placeBlockOnTheFloor, startBot} from './src/bot.js'
+import {wait} from './src/common.js'
+import {getRconClient, waitForServer} from './src/rcon.js'
 
-(async() => {
+(async () => {
     console.log('[AUTOMATA] Waiting for Minecraft server to be ready...')
     await waitForServer()
 
     console.log('[AUTOMATA] Logging in as test account...')
     const bot = await startBot()
-    await bot.look(0, -Math.PI/2)
+    await bot.look(0, -Math.PI / 2)
 
     console.log('[AUTOMATA] Making test account an OP...')
     const conn = await getRconClient()

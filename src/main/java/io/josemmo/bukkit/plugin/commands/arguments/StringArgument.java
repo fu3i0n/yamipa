@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class StringArgument extends Argument {
     /**
      * String Argument constructor
+     *
      * @param name Argument name
      */
     public StringArgument(@NotNull String name) {

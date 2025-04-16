@@ -5,6 +5,7 @@ import io.josemmo.bukkit.plugin.renderer.FakeImage;
 import io.josemmo.bukkit.plugin.renderer.FakeMap;
 import io.josemmo.bukkit.plugin.utils.Logger;
 import org.jetbrains.annotations.NotNull;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
@@ -25,7 +26,7 @@ import java.util.stream.IntStream;
 
 public class CachedMapsFile extends SynchronizedFile {
     private static final String CACHE_EXT = "cache";
-    private static final byte[] CACHE_SIGNATURE = new byte[] {0x59, 0x4d, 0x50}; // "YMP"
+    private static final byte[] CACHE_SIGNATURE = new byte[]{0x59, 0x4d, 0x50}; // "YMP"
     private static final int CACHE_VERSION = 1;
     private static final Logger LOGGER = Logger.getLogger("CachedMapsFile");
     private final ImageFile imageFile;
@@ -35,11 +36,28 @@ public class CachedMapsFile extends SynchronizedFile {
     private int delay;
 
     /**
+     * Class constructor
+     *
+     * @param path      Path to cached maps file in disk
+     * @param imageFile Image file associated to these maps
+     * @param width     Width in blocks
+     * @param height    Height blocks
+     */
+    private CachedMapsFile(@NotNull Path path, @NotNull ImageFile imageFile, int width, int height) {
+        super(path);
+        this.imageFile = imageFile;
+        this.width = width;
+        this.height = height;
+        load();
+    }
+
+    /**
      * Create instance from image file
-     * @param  imageFile Image file instance
-     * @param  width     Width in blocks
-     * @param  height    Height in blocks
-     * @return           Cached maps instance
+     *
+     * @param imageFile Image file instance
+     * @param width     Width in blocks
+     * @param height    Height in blocks
+     * @return Cached maps instance
      */
     public static @NotNull CachedMapsFile from(@NotNull ImageFile imageFile, int width, int height) {
         Path cachePath = YamipaPlugin.getInstance().getStorage().getCachePath();
@@ -49,6 +67,7 @@ public class CachedMapsFile extends SynchronizedFile {
 
     /**
      * Delete all cached maps files associated to an image file
+     *
      * @param imageFile Image file instance
      */
     public static void deleteAll(@NotNull ImageFile imageFile) {
@@ -78,22 +97,8 @@ public class CachedMapsFile extends SynchronizedFile {
     }
 
     /**
-     * Class constructor
-     * @param path      Path to cached maps file in disk
-     * @param imageFile Image file associated to these maps
-     * @param width     Width in blocks
-     * @param height    Height blocks
-     */
-    private CachedMapsFile(@NotNull Path path, @NotNull ImageFile imageFile, int width, int height) {
-        super(path);
-        this.imageFile = imageFile;
-        this.width = width;
-        this.height = height;
-        load();
-    }
-
-    /**
      * Get maps
+     *
      * @return Tri-dimensional array of maps (column, row, step)
      */
     public @NotNull FakeMap[][][] getMaps() {
@@ -102,6 +107,7 @@ public class CachedMapsFile extends SynchronizedFile {
 
     /**
      * Get delay between steps
+     *
      * @return Delay in 50ms intervals or <code>0</code> if not applicable
      */
     public int getDelay() {
@@ -142,8 +148,9 @@ public class CachedMapsFile extends SynchronizedFile {
 
     /**
      * Load data from disk
+     *
      * @throws IllegalArgumentException if cache file is outdated
-     * @throws IOException if cache file is corrupted
+     * @throws IOException              if cache file is corrupted
      */
     private void loadFromDisk() throws IllegalArgumentException, IOException {
         try (RandomAccessFile stream = read()) {
@@ -176,10 +183,10 @@ public class CachedMapsFile extends SynchronizedFile {
 
             // Read pixels
             FakeMap[][][] maps = new FakeMap[width][height][numOfSteps];
-            for (int col=0; col<width; ++col) {
-                for (int row=0; row<height; ++row) {
-                    for (int step=0; step<numOfSteps; ++step) {
-                        byte[] buffer = new byte[FakeMap.DIMENSION*FakeMap.DIMENSION];
+            for (int col = 0; col < width; ++col) {
+                for (int row = 0; row < height; ++row) {
+                    for (int step = 0; step < numOfSteps; ++step) {
+                        byte[] buffer = new byte[FakeMap.DIMENSION * FakeMap.DIMENSION];
                         stream.read(buffer);
                         maps[col][row][step] = new FakeMap(buffer);
                     }
@@ -194,7 +201,8 @@ public class CachedMapsFile extends SynchronizedFile {
 
     /**
      * Generate data from image
-     * @throws IOException if an I/O error occurred
+     *
+     * @throws IOException      if an I/O error occurred
      * @throws RuntimeException if failed to render image steps
      */
     private void generateFromImage() throws IOException, RuntimeException {
@@ -222,7 +230,7 @@ public class CachedMapsFile extends SynchronizedFile {
             tmpScaledGraphics.setBackground(new Color(0, 0, 0, 0));
 
             // Read images from file
-            for (int step=0; step<FakeImage.MAX_STEPS; ++step) {
+            for (int step = 0; step < FakeImage.MAX_STEPS; ++step) {
                 try {
                     // Extract step metadata
                     int imageLeft = 0;
@@ -232,7 +240,7 @@ public class CachedMapsFile extends SynchronizedFile {
                         IIOMetadata metadata = reader.getImageMetadata(step);
                         String formatName = metadata.getNativeMetadataFormatName();
                         IIOMetadataNode metadataRoot = (IIOMetadataNode) metadata.getAsTree(formatName);
-                        for (int i=0; i<metadataRoot.getLength(); ++i) {
+                        for (int i = 0; i < metadataRoot.getLength(); ++i) {
                             String nodeName = metadataRoot.item(i).getNodeName();
                             if (nodeName.equalsIgnoreCase("ImageDescriptor")) {
                                 IIOMetadataNode descriptorNode = (IIOMetadataNode) metadataRoot.item(i);
@@ -293,13 +301,13 @@ public class CachedMapsFile extends SynchronizedFile {
         // Instantiate fake maps from image steps
         FakeMap[][][] maps = new FakeMap[width][height][renderedImages.size()];
         IntStream.range(0, renderedImages.size()).forEach(i -> {
-            for (int col=0; col<width; col++) {
-                for (int row=0; row<height; row++) {
+            for (int col = 0; col < width; col++) {
+                for (int row = 0; row < height; row++) {
                     maps[col][row][i] = new FakeMap(
                         renderedImages.get(i),
                         widthInPixels,
-                        col*FakeMap.DIMENSION,
-                        row*FakeMap.DIMENSION
+                        col * FakeMap.DIMENSION,
+                        row * FakeMap.DIMENSION
                     );
                 }
             }
@@ -329,9 +337,9 @@ public class CachedMapsFile extends SynchronizedFile {
 
             // Add pixels
             //noinspection ForLoopReplaceableByForEach
-            for (int col=0; col<maps.length; ++col) {
-                for (int row=0; row<maps[0].length; ++row) {
-                    for (int step=0; step<numOfSteps; ++step) {
+            for (int col = 0; col < maps.length; ++col) {
+                for (int row = 0; row < maps[0].length; ++row) {
+                    for (int step = 0; step < numOfSteps; ++step) {
                         stream.write(maps[col][row][step].getPixels());
                     }
                 }

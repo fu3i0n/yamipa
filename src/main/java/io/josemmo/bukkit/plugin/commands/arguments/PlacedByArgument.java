@@ -8,6 +8,7 @@ import io.josemmo.bukkit.plugin.renderer.ImageRenderer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -15,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 public class PlacedByArgument extends StringArgument {
     /**
      * Placed by Argument constructor
+     *
      * @param name Argument name
      */
     public PlacedByArgument(@NotNull String name) {

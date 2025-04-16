@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class ImageDimensionArgument extends IntegerArgument {
     /**
      * Dimension Argument constructor
+     *
      * @param name Argument name
      */
     public ImageDimensionArgument(@NotNull String name) {

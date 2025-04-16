@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -14,12 +15,8 @@ import java.util.Objects;
  * World Area IDs represent groups of 16 chunks arranged in a 4x4 square.
  */
 public class WorldAreaId {
-    private static boolean USE_WORLD_VIEW_DISTANCE = true;
     private static final Map<String, Integer> SIZES_PER_WORLD = new HashMap<>();
-    private final World world;
-    private final int x;
-    private final int z;
-    private WorldAreaId[] neighborhood = null;
+    private static boolean USE_WORLD_VIEW_DISTANCE = true;
 
     static {
         try {
@@ -29,18 +26,14 @@ public class WorldAreaId {
         }
     }
 
-    /**
-     * Get ID from location
-     * @param  location Location instance
-     * @return          World area ID
-     */
-    public static @NotNull WorldAreaId fromLocation(@NotNull Location location) {
-        Chunk chunk = location.getChunk();
-        return new WorldAreaId(chunk.getWorld(), chunk.getX() >> 2, chunk.getZ() >> 2);
-    }
+    private final World world;
+    private final int x;
+    private final int z;
+    private WorldAreaId[] neighborhood = null;
 
     /**
      * Class constructor
+     *
      * @param world World instance
      * @param x     World area X coordinate
      * @param z     World area Z coordinate
@@ -52,7 +45,19 @@ public class WorldAreaId {
     }
 
     /**
+     * Get ID from location
+     *
+     * @param location Location instance
+     * @return World area ID
+     */
+    public static @NotNull WorldAreaId fromLocation(@NotNull Location location) {
+        Chunk chunk = location.getChunk();
+        return new WorldAreaId(chunk.getWorld(), chunk.getX() >> 2, chunk.getZ() >> 2);
+    }
+
+    /**
      * Get world instance
+     *
      * @return World instance
      */
     public @NotNull World getWorld() {
@@ -61,6 +66,7 @@ public class WorldAreaId {
 
     /**
      * Get nearby world area IDs in view distance (plus this one)
+     *
      * @return Array of neighbors
      */
     public @NotNull WorldAreaId[] getNeighborhood() {
@@ -82,13 +88,13 @@ public class WorldAreaId {
         // ·|·
         if (size == 0) {
             neighborhood = new WorldAreaId[]{
-                new WorldAreaId(world, x, z-1),
+                new WorldAreaId(world, x, z - 1),
 
-                new WorldAreaId(world, x-1, z),
+                new WorldAreaId(world, x - 1, z),
                 this,
-                new WorldAreaId(world, x+1, z),
+                new WorldAreaId(world, x + 1, z),
 
-                new WorldAreaId(world, x, z+1),
+                new WorldAreaId(world, x, z + 1),
             };
             return neighborhood;
         }
@@ -101,31 +107,31 @@ public class WorldAreaId {
         // ·X|X·
         if (size == 1) {
             neighborhood = new WorldAreaId[]{
-                new WorldAreaId(world, x-1, z-2),
-                new WorldAreaId(world, x, z-2),
-                new WorldAreaId(world, x+1, z-2),
+                new WorldAreaId(world, x - 1, z - 2),
+                new WorldAreaId(world, x, z - 2),
+                new WorldAreaId(world, x + 1, z - 2),
 
-                new WorldAreaId(world, x-2, z-1),
-                new WorldAreaId(world, x-1, z-1),
-                new WorldAreaId(world, x, z-1),
-                new WorldAreaId(world, x+1, z-1),
-                new WorldAreaId(world, x+2, z-1),
+                new WorldAreaId(world, x - 2, z - 1),
+                new WorldAreaId(world, x - 1, z - 1),
+                new WorldAreaId(world, x, z - 1),
+                new WorldAreaId(world, x + 1, z - 1),
+                new WorldAreaId(world, x + 2, z - 1),
 
-                new WorldAreaId(world, x-2, z),
-                new WorldAreaId(world, x-1, z),
+                new WorldAreaId(world, x - 2, z),
+                new WorldAreaId(world, x - 1, z),
                 this,
-                new WorldAreaId(world, x+1, z),
-                new WorldAreaId(world, x+2, z),
+                new WorldAreaId(world, x + 1, z),
+                new WorldAreaId(world, x + 2, z),
 
-                new WorldAreaId(world, x-2, z+1),
-                new WorldAreaId(world, x-1, z+1),
-                new WorldAreaId(world, x, z+1),
-                new WorldAreaId(world, x+1, z+1),
-                new WorldAreaId(world, x+2, z+1),
+                new WorldAreaId(world, x - 2, z + 1),
+                new WorldAreaId(world, x - 1, z + 1),
+                new WorldAreaId(world, x, z + 1),
+                new WorldAreaId(world, x + 1, z + 1),
+                new WorldAreaId(world, x + 2, z + 1),
 
-                new WorldAreaId(world, x-1, z+2),
-                new WorldAreaId(world, x, z+2),
-                new WorldAreaId(world, x+1, z+2),
+                new WorldAreaId(world, x - 1, z + 2),
+                new WorldAreaId(world, x, z + 2),
+                new WorldAreaId(world, x + 1, z + 2),
             };
             return neighborhood;
         }
@@ -140,49 +146,49 @@ public class WorldAreaId {
         // ··X|X··
         if (size == 2) {
             neighborhood = new WorldAreaId[]{
-                new WorldAreaId(world, x-1, z-3),
-                new WorldAreaId(world, x, z-3),
-                new WorldAreaId(world, x+1, z-3),
+                new WorldAreaId(world, x - 1, z - 3),
+                new WorldAreaId(world, x, z - 3),
+                new WorldAreaId(world, x + 1, z - 3),
 
-                new WorldAreaId(world, x-2, z-2),
-                new WorldAreaId(world, x-1, z-2),
-                new WorldAreaId(world, x, z-2),
-                new WorldAreaId(world, x+1, z-2),
-                new WorldAreaId(world, x+2, z-2),
+                new WorldAreaId(world, x - 2, z - 2),
+                new WorldAreaId(world, x - 1, z - 2),
+                new WorldAreaId(world, x, z - 2),
+                new WorldAreaId(world, x + 1, z - 2),
+                new WorldAreaId(world, x + 2, z - 2),
 
-                new WorldAreaId(world, x-3, z-1),
-                new WorldAreaId(world, x-2, z-1),
-                new WorldAreaId(world, x-1, z-1),
-                new WorldAreaId(world, x, z-1),
-                new WorldAreaId(world, x+1, z-1),
-                new WorldAreaId(world, x+2, z-1),
-                new WorldAreaId(world, x+3, z-1),
+                new WorldAreaId(world, x - 3, z - 1),
+                new WorldAreaId(world, x - 2, z - 1),
+                new WorldAreaId(world, x - 1, z - 1),
+                new WorldAreaId(world, x, z - 1),
+                new WorldAreaId(world, x + 1, z - 1),
+                new WorldAreaId(world, x + 2, z - 1),
+                new WorldAreaId(world, x + 3, z - 1),
 
-                new WorldAreaId(world, x-3, z),
-                new WorldAreaId(world, x-2, z),
-                new WorldAreaId(world, x-1, z),
+                new WorldAreaId(world, x - 3, z),
+                new WorldAreaId(world, x - 2, z),
+                new WorldAreaId(world, x - 1, z),
                 this,
-                new WorldAreaId(world, x+1, z),
-                new WorldAreaId(world, x+2, z),
-                new WorldAreaId(world, x+3, z),
+                new WorldAreaId(world, x + 1, z),
+                new WorldAreaId(world, x + 2, z),
+                new WorldAreaId(world, x + 3, z),
 
-                new WorldAreaId(world, x-3, z+1),
-                new WorldAreaId(world, x-2, z+1),
-                new WorldAreaId(world, x-1, z+1),
-                new WorldAreaId(world, x, z+1),
-                new WorldAreaId(world, x+1, z+1),
-                new WorldAreaId(world, x+2, z+1),
-                new WorldAreaId(world, x+3, z+1),
+                new WorldAreaId(world, x - 3, z + 1),
+                new WorldAreaId(world, x - 2, z + 1),
+                new WorldAreaId(world, x - 1, z + 1),
+                new WorldAreaId(world, x, z + 1),
+                new WorldAreaId(world, x + 1, z + 1),
+                new WorldAreaId(world, x + 2, z + 1),
+                new WorldAreaId(world, x + 3, z + 1),
 
-                new WorldAreaId(world, x-2, z+2),
-                new WorldAreaId(world, x-1, z+2),
-                new WorldAreaId(world, x, z+2),
-                new WorldAreaId(world, x+1, z+2),
-                new WorldAreaId(world, x+2, z+2),
+                new WorldAreaId(world, x - 2, z + 2),
+                new WorldAreaId(world, x - 1, z + 2),
+                new WorldAreaId(world, x, z + 2),
+                new WorldAreaId(world, x + 1, z + 2),
+                new WorldAreaId(world, x + 2, z + 2),
 
-                new WorldAreaId(world, x-1, z+3),
-                new WorldAreaId(world, x, z+3),
-                new WorldAreaId(world, x+1, z+3),
+                new WorldAreaId(world, x - 1, z + 3),
+                new WorldAreaId(world, x, z + 3),
+                new WorldAreaId(world, x + 1, z + 3),
             };
             return neighborhood;
         }
@@ -199,75 +205,75 @@ public class WorldAreaId {
         // ···X|X···
         if (size == 3) {
             neighborhood = new WorldAreaId[]{
-                new WorldAreaId(world, x-1, z-4),
-                new WorldAreaId(world, x, z-4),
-                new WorldAreaId(world, x+1, z-4),
+                new WorldAreaId(world, x - 1, z - 4),
+                new WorldAreaId(world, x, z - 4),
+                new WorldAreaId(world, x + 1, z - 4),
 
-                new WorldAreaId(world, x-3, z-3),
-                new WorldAreaId(world, x-2, z-3),
-                new WorldAreaId(world, x-1, z-3),
-                new WorldAreaId(world, x, z-3),
-                new WorldAreaId(world, x+1, z-3),
-                new WorldAreaId(world, x+2, z-3),
-                new WorldAreaId(world, x+3, z-3),
+                new WorldAreaId(world, x - 3, z - 3),
+                new WorldAreaId(world, x - 2, z - 3),
+                new WorldAreaId(world, x - 1, z - 3),
+                new WorldAreaId(world, x, z - 3),
+                new WorldAreaId(world, x + 1, z - 3),
+                new WorldAreaId(world, x + 2, z - 3),
+                new WorldAreaId(world, x + 3, z - 3),
 
-                new WorldAreaId(world, x-3, z-2),
-                new WorldAreaId(world, x-2, z-2),
-                new WorldAreaId(world, x-1, z-2),
-                new WorldAreaId(world, x, z-2),
-                new WorldAreaId(world, x+1, z-2),
-                new WorldAreaId(world, x+2, z-2),
-                new WorldAreaId(world, x+3, z-2),
+                new WorldAreaId(world, x - 3, z - 2),
+                new WorldAreaId(world, x - 2, z - 2),
+                new WorldAreaId(world, x - 1, z - 2),
+                new WorldAreaId(world, x, z - 2),
+                new WorldAreaId(world, x + 1, z - 2),
+                new WorldAreaId(world, x + 2, z - 2),
+                new WorldAreaId(world, x + 3, z - 2),
 
-                new WorldAreaId(world, x-4, z-1),
-                new WorldAreaId(world, x-3, z-1),
-                new WorldAreaId(world, x-2, z-1),
-                new WorldAreaId(world, x-1, z-1),
-                new WorldAreaId(world, x, z-1),
-                new WorldAreaId(world, x+1, z-1),
-                new WorldAreaId(world, x+2, z-1),
-                new WorldAreaId(world, x+3, z-1),
-                new WorldAreaId(world, x+4, z-1),
+                new WorldAreaId(world, x - 4, z - 1),
+                new WorldAreaId(world, x - 3, z - 1),
+                new WorldAreaId(world, x - 2, z - 1),
+                new WorldAreaId(world, x - 1, z - 1),
+                new WorldAreaId(world, x, z - 1),
+                new WorldAreaId(world, x + 1, z - 1),
+                new WorldAreaId(world, x + 2, z - 1),
+                new WorldAreaId(world, x + 3, z - 1),
+                new WorldAreaId(world, x + 4, z - 1),
 
-                new WorldAreaId(world, x-4, z),
-                new WorldAreaId(world, x-3, z),
-                new WorldAreaId(world, x-2, z),
-                new WorldAreaId(world, x-1, z),
+                new WorldAreaId(world, x - 4, z),
+                new WorldAreaId(world, x - 3, z),
+                new WorldAreaId(world, x - 2, z),
+                new WorldAreaId(world, x - 1, z),
                 this,
-                new WorldAreaId(world, x+1, z),
-                new WorldAreaId(world, x+2, z),
-                new WorldAreaId(world, x+3, z),
-                new WorldAreaId(world, x+4, z),
+                new WorldAreaId(world, x + 1, z),
+                new WorldAreaId(world, x + 2, z),
+                new WorldAreaId(world, x + 3, z),
+                new WorldAreaId(world, x + 4, z),
 
-                new WorldAreaId(world, x-4, z+1),
-                new WorldAreaId(world, x-3, z+1),
-                new WorldAreaId(world, x-2, z+1),
-                new WorldAreaId(world, x-1, z+1),
-                new WorldAreaId(world, x, z+1),
-                new WorldAreaId(world, x+1, z+1),
-                new WorldAreaId(world, x+2, z+1),
-                new WorldAreaId(world, x+3, z+1),
-                new WorldAreaId(world, x+4, z+1),
+                new WorldAreaId(world, x - 4, z + 1),
+                new WorldAreaId(world, x - 3, z + 1),
+                new WorldAreaId(world, x - 2, z + 1),
+                new WorldAreaId(world, x - 1, z + 1),
+                new WorldAreaId(world, x, z + 1),
+                new WorldAreaId(world, x + 1, z + 1),
+                new WorldAreaId(world, x + 2, z + 1),
+                new WorldAreaId(world, x + 3, z + 1),
+                new WorldAreaId(world, x + 4, z + 1),
 
-                new WorldAreaId(world, x-3, z+2),
-                new WorldAreaId(world, x-2, z+2),
-                new WorldAreaId(world, x-1, z+2),
-                new WorldAreaId(world, x, z+2),
-                new WorldAreaId(world, x+1, z+2),
-                new WorldAreaId(world, x+2, z+2),
-                new WorldAreaId(world, x+3, z+2),
+                new WorldAreaId(world, x - 3, z + 2),
+                new WorldAreaId(world, x - 2, z + 2),
+                new WorldAreaId(world, x - 1, z + 2),
+                new WorldAreaId(world, x, z + 2),
+                new WorldAreaId(world, x + 1, z + 2),
+                new WorldAreaId(world, x + 2, z + 2),
+                new WorldAreaId(world, x + 3, z + 2),
 
-                new WorldAreaId(world, x-3, z+3),
-                new WorldAreaId(world, x-2, z+3),
-                new WorldAreaId(world, x-1, z+3),
-                new WorldAreaId(world, x, z+3),
-                new WorldAreaId(world, x+1, z+3),
-                new WorldAreaId(world, x+2, z+3),
-                new WorldAreaId(world, x+3, z+3),
+                new WorldAreaId(world, x - 3, z + 3),
+                new WorldAreaId(world, x - 2, z + 3),
+                new WorldAreaId(world, x - 1, z + 3),
+                new WorldAreaId(world, x, z + 3),
+                new WorldAreaId(world, x + 1, z + 3),
+                new WorldAreaId(world, x + 2, z + 3),
+                new WorldAreaId(world, x + 3, z + 3),
 
-                new WorldAreaId(world, x-1, z+4),
-                new WorldAreaId(world, x, z+4),
-                new WorldAreaId(world, x+1, z+4),
+                new WorldAreaId(world, x - 1, z + 4),
+                new WorldAreaId(world, x, z + 4),
+                new WorldAreaId(world, x + 1, z + 4),
             };
             return neighborhood;
         }
@@ -285,113 +291,113 @@ public class WorldAreaId {
         // ··XXX|XXX··
         // ···XX|XX···
         neighborhood = new WorldAreaId[]{
-            new WorldAreaId(world, x-2, z-5),
-            new WorldAreaId(world, x-1, z-5),
-            new WorldAreaId(world, x, z-5),
-            new WorldAreaId(world, x+1, z-5),
-            new WorldAreaId(world, x+2, z-5),
+            new WorldAreaId(world, x - 2, z - 5),
+            new WorldAreaId(world, x - 1, z - 5),
+            new WorldAreaId(world, x, z - 5),
+            new WorldAreaId(world, x + 1, z - 5),
+            new WorldAreaId(world, x + 2, z - 5),
 
-            new WorldAreaId(world, x-3, z-4),
-            new WorldAreaId(world, x-2, z-4),
-            new WorldAreaId(world, x-1, z-4),
-            new WorldAreaId(world, x, z-4),
-            new WorldAreaId(world, x+1, z-4),
-            new WorldAreaId(world, x+2, z-4),
-            new WorldAreaId(world, x+3, z-4),
+            new WorldAreaId(world, x - 3, z - 4),
+            new WorldAreaId(world, x - 2, z - 4),
+            new WorldAreaId(world, x - 1, z - 4),
+            new WorldAreaId(world, x, z - 4),
+            new WorldAreaId(world, x + 1, z - 4),
+            new WorldAreaId(world, x + 2, z - 4),
+            new WorldAreaId(world, x + 3, z - 4),
 
-            new WorldAreaId(world, x-4, z-3),
-            new WorldAreaId(world, x-3, z-3),
-            new WorldAreaId(world, x-2, z-3),
-            new WorldAreaId(world, x-1, z-3),
-            new WorldAreaId(world, x, z-3),
-            new WorldAreaId(world, x+1, z-3),
-            new WorldAreaId(world, x+2, z-3),
-            new WorldAreaId(world, x+3, z-3),
-            new WorldAreaId(world, x+4, z-3),
+            new WorldAreaId(world, x - 4, z - 3),
+            new WorldAreaId(world, x - 3, z - 3),
+            new WorldAreaId(world, x - 2, z - 3),
+            new WorldAreaId(world, x - 1, z - 3),
+            new WorldAreaId(world, x, z - 3),
+            new WorldAreaId(world, x + 1, z - 3),
+            new WorldAreaId(world, x + 2, z - 3),
+            new WorldAreaId(world, x + 3, z - 3),
+            new WorldAreaId(world, x + 4, z - 3),
 
-            new WorldAreaId(world, x-5, z-2),
-            new WorldAreaId(world, x-4, z-2),
-            new WorldAreaId(world, x-3, z-2),
-            new WorldAreaId(world, x-2, z-2),
-            new WorldAreaId(world, x-1, z-2),
-            new WorldAreaId(world, x, z-2),
-            new WorldAreaId(world, x+1, z-2),
-            new WorldAreaId(world, x+2, z-2),
-            new WorldAreaId(world, x+3, z-2),
-            new WorldAreaId(world, x+4, z-2),
-            new WorldAreaId(world, x+5, z-2),
+            new WorldAreaId(world, x - 5, z - 2),
+            new WorldAreaId(world, x - 4, z - 2),
+            new WorldAreaId(world, x - 3, z - 2),
+            new WorldAreaId(world, x - 2, z - 2),
+            new WorldAreaId(world, x - 1, z - 2),
+            new WorldAreaId(world, x, z - 2),
+            new WorldAreaId(world, x + 1, z - 2),
+            new WorldAreaId(world, x + 2, z - 2),
+            new WorldAreaId(world, x + 3, z - 2),
+            new WorldAreaId(world, x + 4, z - 2),
+            new WorldAreaId(world, x + 5, z - 2),
 
-            new WorldAreaId(world, x-5, z-1),
-            new WorldAreaId(world, x-4, z-1),
-            new WorldAreaId(world, x-3, z-1),
-            new WorldAreaId(world, x-2, z-1),
-            new WorldAreaId(world, x-1, z-1),
-            new WorldAreaId(world, x, z-1),
-            new WorldAreaId(world, x+1, z-1),
-            new WorldAreaId(world, x+2, z-1),
-            new WorldAreaId(world, x+3, z-1),
-            new WorldAreaId(world, x+4, z-1),
-            new WorldAreaId(world, x+5, z-1),
+            new WorldAreaId(world, x - 5, z - 1),
+            new WorldAreaId(world, x - 4, z - 1),
+            new WorldAreaId(world, x - 3, z - 1),
+            new WorldAreaId(world, x - 2, z - 1),
+            new WorldAreaId(world, x - 1, z - 1),
+            new WorldAreaId(world, x, z - 1),
+            new WorldAreaId(world, x + 1, z - 1),
+            new WorldAreaId(world, x + 2, z - 1),
+            new WorldAreaId(world, x + 3, z - 1),
+            new WorldAreaId(world, x + 4, z - 1),
+            new WorldAreaId(world, x + 5, z - 1),
 
-            new WorldAreaId(world, x-5, z),
-            new WorldAreaId(world, x-4, z),
-            new WorldAreaId(world, x-3, z),
-            new WorldAreaId(world, x-2, z),
-            new WorldAreaId(world, x-1, z),
+            new WorldAreaId(world, x - 5, z),
+            new WorldAreaId(world, x - 4, z),
+            new WorldAreaId(world, x - 3, z),
+            new WorldAreaId(world, x - 2, z),
+            new WorldAreaId(world, x - 1, z),
             this,
-            new WorldAreaId(world, x+1, z),
-            new WorldAreaId(world, x+2, z),
-            new WorldAreaId(world, x+3, z),
-            new WorldAreaId(world, x+4, z),
-            new WorldAreaId(world, x+5, z),
+            new WorldAreaId(world, x + 1, z),
+            new WorldAreaId(world, x + 2, z),
+            new WorldAreaId(world, x + 3, z),
+            new WorldAreaId(world, x + 4, z),
+            new WorldAreaId(world, x + 5, z),
 
-            new WorldAreaId(world, x-5, z+1),
-            new WorldAreaId(world, x-4, z+1),
-            new WorldAreaId(world, x-3, z+1),
-            new WorldAreaId(world, x-2, z+1),
-            new WorldAreaId(world, x-1, z+1),
-            new WorldAreaId(world, x, z+1),
-            new WorldAreaId(world, x+1, z+1),
-            new WorldAreaId(world, x+2, z+1),
-            new WorldAreaId(world, x+3, z+1),
-            new WorldAreaId(world, x+4, z+1),
-            new WorldAreaId(world, x+5, z+1),
+            new WorldAreaId(world, x - 5, z + 1),
+            new WorldAreaId(world, x - 4, z + 1),
+            new WorldAreaId(world, x - 3, z + 1),
+            new WorldAreaId(world, x - 2, z + 1),
+            new WorldAreaId(world, x - 1, z + 1),
+            new WorldAreaId(world, x, z + 1),
+            new WorldAreaId(world, x + 1, z + 1),
+            new WorldAreaId(world, x + 2, z + 1),
+            new WorldAreaId(world, x + 3, z + 1),
+            new WorldAreaId(world, x + 4, z + 1),
+            new WorldAreaId(world, x + 5, z + 1),
 
-            new WorldAreaId(world, x-5, z+2),
-            new WorldAreaId(world, x-4, z+2),
-            new WorldAreaId(world, x-3, z+2),
-            new WorldAreaId(world, x-2, z+2),
-            new WorldAreaId(world, x-1, z+2),
-            new WorldAreaId(world, x, z+2),
-            new WorldAreaId(world, x+1, z+2),
-            new WorldAreaId(world, x+2, z+2),
-            new WorldAreaId(world, x+3, z+2),
-            new WorldAreaId(world, x+4, z+2),
-            new WorldAreaId(world, x+5, z+2),
+            new WorldAreaId(world, x - 5, z + 2),
+            new WorldAreaId(world, x - 4, z + 2),
+            new WorldAreaId(world, x - 3, z + 2),
+            new WorldAreaId(world, x - 2, z + 2),
+            new WorldAreaId(world, x - 1, z + 2),
+            new WorldAreaId(world, x, z + 2),
+            new WorldAreaId(world, x + 1, z + 2),
+            new WorldAreaId(world, x + 2, z + 2),
+            new WorldAreaId(world, x + 3, z + 2),
+            new WorldAreaId(world, x + 4, z + 2),
+            new WorldAreaId(world, x + 5, z + 2),
 
-            new WorldAreaId(world, x-4, z+3),
-            new WorldAreaId(world, x-3, z+3),
-            new WorldAreaId(world, x-2, z+3),
-            new WorldAreaId(world, x-1, z+3),
-            new WorldAreaId(world, x, z+3),
-            new WorldAreaId(world, x+1, z+3),
-            new WorldAreaId(world, x+2, z+3),
-            new WorldAreaId(world, x+3, z+3),
-            new WorldAreaId(world, x+4, z+3),
+            new WorldAreaId(world, x - 4, z + 3),
+            new WorldAreaId(world, x - 3, z + 3),
+            new WorldAreaId(world, x - 2, z + 3),
+            new WorldAreaId(world, x - 1, z + 3),
+            new WorldAreaId(world, x, z + 3),
+            new WorldAreaId(world, x + 1, z + 3),
+            new WorldAreaId(world, x + 2, z + 3),
+            new WorldAreaId(world, x + 3, z + 3),
+            new WorldAreaId(world, x + 4, z + 3),
 
-            new WorldAreaId(world, x-3, z+4),
-            new WorldAreaId(world, x-2, z+4),
-            new WorldAreaId(world, x-1, z+4),
-            new WorldAreaId(world, x, z+4),
-            new WorldAreaId(world, x+1, z+4),
-            new WorldAreaId(world, x+2, z+4),
-            new WorldAreaId(world, x+3, z+4),
+            new WorldAreaId(world, x - 3, z + 4),
+            new WorldAreaId(world, x - 2, z + 4),
+            new WorldAreaId(world, x - 1, z + 4),
+            new WorldAreaId(world, x, z + 4),
+            new WorldAreaId(world, x + 1, z + 4),
+            new WorldAreaId(world, x + 2, z + 4),
+            new WorldAreaId(world, x + 3, z + 4),
 
-            new WorldAreaId(world, x-2, z+5),
-            new WorldAreaId(world, x-1, z+5),
-            new WorldAreaId(world, x, z+5),
-            new WorldAreaId(world, x+1, z+5),
-            new WorldAreaId(world, x+2, z+5),
+            new WorldAreaId(world, x - 2, z + 5),
+            new WorldAreaId(world, x - 1, z + 5),
+            new WorldAreaId(world, x, z + 5),
+            new WorldAreaId(world, x + 1, z + 5),
+            new WorldAreaId(world, x + 2, z + 5),
         };
         return neighborhood;
     }

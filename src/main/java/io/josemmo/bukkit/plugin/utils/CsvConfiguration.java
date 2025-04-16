@@ -1,6 +1,7 @@
 package io.josemmo.bukkit.plugin.utils;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
@@ -23,6 +24,7 @@ public class CsvConfiguration {
 
     /**
      * Get rows
+     *
      * @return List of rows
      */
     public @NotNull List<String[]> getRows() {
@@ -31,6 +33,7 @@ public class CsvConfiguration {
 
     /**
      * Add row
+     *
      * @param row Row
      */
     public void addRow(@NotNull String[] row) {
@@ -39,6 +42,7 @@ public class CsvConfiguration {
 
     /**
      * Load from file
+     *
      * @param path File path
      * @throws IOException if failed to read file
      */
@@ -65,6 +69,7 @@ public class CsvConfiguration {
 
     /**
      * Save to file
+     *
      * @param path File path
      * @throws IOException if failed to write file
      */

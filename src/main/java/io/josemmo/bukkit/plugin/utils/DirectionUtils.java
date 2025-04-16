@@ -6,8 +6,9 @@ import org.jetbrains.annotations.NotNull;
 public class DirectionUtils {
     /**
      * Get cardinal direction
-     * @param  yaw Yaw angle
-     * @return     Cardinal direction
+     *
+     * @param yaw Yaw angle
+     * @return Cardinal direction
      */
     public static @NotNull BlockFace getCardinalDirection(float yaw) {
         if (yaw < 0) {

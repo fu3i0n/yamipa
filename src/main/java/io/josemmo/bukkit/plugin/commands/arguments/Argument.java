@@ -8,6 +8,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.CompletableFuture;
 
 public abstract class Argument {
@@ -15,6 +16,7 @@ public abstract class Argument {
 
     /**
      * Argument constructor
+     *
      * @param name Argument name
      */
     public Argument(@NotNull String name) {
@@ -23,6 +25,7 @@ public abstract class Argument {
 
     /**
      * Get argument name
+     *
      * @return Argument name
      */
     public @NotNull String getName() {
@@ -31,15 +34,17 @@ public abstract class Argument {
 
     /**
      * Build argument
+     *
      * @return Argument builder instance
      */
     public abstract @NotNull RequiredArgumentBuilder<?, ?> build();
 
     /**
      * Suggest argument values
-     * @param  sender  Command sender
-     * @param  builder Suggestions builder instance
-     * @return         Suggestions
+     *
+     * @param sender  Command sender
+     * @param builder Suggestions builder instance
+     * @return Suggestions
      */
     public @NotNull CompletableFuture<Suggestions> suggest(@NotNull CommandSender sender, @NotNull SuggestionsBuilder builder) {
         return builder.buildFuture();
@@ -47,9 +52,10 @@ public abstract class Argument {
 
     /**
      * Parse argument value
-     * @param  sender   Command sender
-     * @param  rawValue Argument value provided by Brigadier
-     * @return          Parsed argument value
+     *
+     * @param sender   Command sender
+     * @param rawValue Argument value provided by Brigadier
+     * @return Parsed argument value
      */
     public @NotNull Object parse(@NotNull CommandSender sender, @NotNull Object rawValue) throws CommandSyntaxException {
         return rawValue;
@@ -57,8 +63,9 @@ public abstract class Argument {
 
     /**
      * Create new syntax exception
-     * @param  message Message to show
-     * @return         Syntax exception
+     *
+     * @param message Message to show
+     * @return Syntax exception
      */
     protected @NotNull CommandSyntaxException newException(@NotNull String message) {
         return new SimpleCommandExceptionType(new LiteralMessage(message)).create();

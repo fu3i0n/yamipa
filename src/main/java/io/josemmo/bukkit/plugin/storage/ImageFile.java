@@ -6,6 +6,7 @@ import io.josemmo.bukkit.plugin.utils.Logger;
 import org.jetbrains.annotations.Blocking;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -30,6 +31,7 @@ public class ImageFile extends SynchronizedFile {
 
     /**
      * Class constructor
+     *
      * @param filename Image filename
      * @param path     Path to image file
      */
@@ -40,6 +42,7 @@ public class ImageFile extends SynchronizedFile {
 
     /**
      * Get image filename
+     *
      * @return Image filename
      */
     public @NotNull String getFilename() {
@@ -48,6 +51,7 @@ public class ImageFile extends SynchronizedFile {
 
     /**
      * Get original size in pixels
+     *
      * @return Dimension instance or NULL if not a valid image file
      */
     public synchronized @Nullable Dimension getSize() {
@@ -67,8 +71,9 @@ public class ImageFile extends SynchronizedFile {
 
     /**
      * Get maps and subscribe to them
-     * @param  subscriber Fake image instance requesting the maps
-     * @return            Cached maps
+     *
+     * @param subscriber Fake image instance requesting the maps
+     * @return Cached maps
      */
     @Blocking
     public @NotNull CachedMapsFile getMapsAndSubscribe(@NotNull FakeImage subscriber) {
@@ -104,6 +109,7 @@ public class ImageFile extends SynchronizedFile {
      * This method is called by {@link FakeImage} instances when they get invalidated by a world area change.
      * By notifying their respective source {@link ImageFile}, the latter can clear cached maps from memory when no
      * more {@link FakeItemFrame}s are using them.
+     *
      * @param subscriber Fake image instance
      */
     public synchronized void unsubscribe(@NotNull FakeImage subscriber) {

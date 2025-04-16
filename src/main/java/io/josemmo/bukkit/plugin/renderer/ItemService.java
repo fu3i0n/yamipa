@@ -24,6 +24,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.Objects;
 
@@ -44,12 +45,13 @@ public class ItemService extends InteractWithEntityListener implements Listener 
 
     /**
      * Get image item
-     * @param  image  Image file
-     * @param  amount Stack amount
-     * @param  width  Image width in blocks
-     * @param  height Image height in blocks
-     * @param  flags  Image flags
-     * @return        Image item
+     *
+     * @param image  Image file
+     * @param amount Stack amount
+     * @param width  Image width in blocks
+     * @param height Image height in blocks
+     * @param flags  Image flags
+     * @return Image item
      */
     public static @NotNull ItemStack getImageItem(@NotNull ImageFile image, int amount, int width, int height, int flags) {
         ItemStack itemStack = new ItemStack(Material.ITEM_FRAME, amount);
@@ -119,7 +121,7 @@ public class ItemService extends InteractWithEntityListener implements Listener 
 
         // Find placed item stack in player's inventory
         // NOTE: we cannot use `event.getItemStack()` as it's only supported since 1.17.1
-        for (int i=0; i<2; i++) {
+        for (int i = 0; i < 2; i++) {
             isOffHand = (i == 1);
             item = isOffHand ? inventory.getItemInOffHand() : inventory.getItemInMainHand();
 
@@ -200,7 +202,7 @@ public class ItemService extends InteractWithEntityListener implements Listener 
         }
         if (
             !player.getUniqueId().equals(image.getPlacedBy().getUniqueId()) &&
-            !player.hasPermission("yamipa.item.remove")
+                !player.hasPermission("yamipa.item.remove")
         ) {
             ActionBar.send(player, ChatColor.RED + "You cannot remove image items from other players!");
             return true;

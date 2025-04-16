@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -19,13 +20,14 @@ import java.util.function.Predicate;
 public class Command {
     private final String name;
     private final List<Argument> arguments = new ArrayList<>();
+    private final List<Command> subcommands = new ArrayList<>();
     private Predicate<CommandSender> requirementHandler = __ -> true;
     private @Nullable BiConsumer<CommandSender, Object[]> executesHandler;
     private @Nullable BiConsumer<Player, Object[]> executesPlayerHandler;
-    private final List<Command> subcommands = new ArrayList<>();
 
     /**
      * Command constructor
+     *
      * @param name Command literal name
      */
     public Command(@NotNull String name) {
@@ -34,8 +36,9 @@ public class Command {
 
     /**
      * Add argument to command
-     * @param  argument Argument instance
-     * @return          This instance
+     *
+     * @param argument Argument instance
+     * @return This instance
      */
     public @NotNull Command withArgument(@NotNull Argument argument) {
         arguments.add(argument);
@@ -44,8 +47,9 @@ public class Command {
 
     /**
      * Add requirement handler to this command
-     * @param  handler Handler to determine command availability
-     * @return         This instance
+     *
+     * @param handler Handler to determine command availability
+     * @return This instance
      */
     public @NotNull Command withRequirement(@NotNull Predicate<CommandSender> handler) {
         requirementHandler = handler;
@@ -54,10 +58,11 @@ public class Command {
 
     /**
      * Add permission requirement to this command
-     * @param  permissions Permission names (match as least one)
-     * @return             This instance
+     *
+     * @param permissions Permission names (match as least one)
+     * @return This instance
      */
-    public @NotNull Command withPermission(@NotNull String ...permissions) {
+    public @NotNull Command withPermission(@NotNull String... permissions) {
         return withRequirement(sender -> {
             for (String permission : permissions) {
                 if (sender.hasPermission(permission)) {
@@ -70,8 +75,9 @@ public class Command {
 
     /**
      * Add handler that will be executed when the command gets called
-     * @param  handler Command handler
-     * @return         This instance
+     *
+     * @param handler Command handler
+     * @return This instance
      */
     public @NotNull Command executes(@NotNull BiConsumer<CommandSender, Object[]> handler) {
         executesHandler = handler;
@@ -80,8 +86,9 @@ public class Command {
 
     /**
      * Add handler that will be executed when the command gets called by a player
-     * @param  handler Command handler
-     * @return         This instance
+     *
+     * @param handler Command handler
+     * @return This instance
      */
     @SuppressWarnings("UnusedReturnValue")
     public @NotNull Command executesPlayer(@NotNull BiConsumer<Player, Object[]> handler) {
@@ -91,8 +98,9 @@ public class Command {
 
     /**
      * Add subcommand to this command
-     * @param  name Subcommand literal name
-     * @return      The new subcommand
+     *
+     * @param name Subcommand literal name
+     * @return The new subcommand
      */
     public @NotNull Command addSubcommand(@NotNull String name) {
         Command subcommand = new Command(name);
@@ -102,6 +110,7 @@ public class Command {
 
     /**
      * Build command and all of its children
+     *
      * @return Literal argument builder instance
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -134,7 +143,7 @@ public class Command {
                 CommandSender sender = Internals.getBukkitSender(ctx.getSource());
                 return argument.suggest(sender, builder);
             });
-            parent.then(buildElement(argumentBuilder, argIndex+1)).executes(ctx -> {
+            parent.then(buildElement(argumentBuilder, argIndex + 1)).executes(ctx -> {
                 CommandSender sender = Internals.getBukkitSender(ctx.getSource());
                 sender.sendMessage(ChatColor.RED + "Missing required arguments");
                 return 1;

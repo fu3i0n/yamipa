@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.map.MapPalette;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.awt.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -20,7 +20,7 @@ public class FakeMap extends FakeEntity {
     public static final int DIMENSION = 128;
     private static final int MIN_MAP_ID = Integer.MAX_VALUE / 4;
     private static final int MAX_MAP_ID = Integer.MAX_VALUE;
-    private static final int RESEND_THRESHOLD = 60*5; // Seconds after sending pixels when resending should be avoided
+    private static final int RESEND_THRESHOLD = 60 * 5; // Seconds after sending pixels when resending should be avoided
     private static final Logger LOGGER = Logger.getLogger("FakeMap");
     private static final AtomicInteger LAST_MAP_ID = new AtomicInteger(MIN_MAP_ID);
     private static @Nullable FakeMap ERROR_INSTANCE;
@@ -29,7 +29,39 @@ public class FakeMap extends FakeEntity {
     private final ConcurrentMap<UUID, Long> lastPlayerSendTime = new ConcurrentHashMap<>();
 
     /**
+     * Class constructor
+     *
+     * @param pixels   Array of Minecraft color indexes
+     * @param scanSize Original image width
+     * @param startX   Initial X pixel coordinate
+     * @param startY   Initial Y pixel coordinate
+     */
+    public FakeMap(byte[] pixels, int scanSize, int startX, int startY) {
+        this.id = getNextId();
+
+        // Copy square of pixels to this instance
+        this.pixels = new byte[DIMENSION * DIMENSION];
+        for (int y = 0; y < DIMENSION; y++) {
+            System.arraycopy(pixels, startX + (startY + y) * scanSize, this.pixels, y * DIMENSION, DIMENSION);
+        }
+
+        LOGGER.fine("Created FakeMap#" + this.id);
+    }
+
+    /**
+     * Class constructor
+     *
+     * @param pixels Array of Minecraft color indexes
+     */
+    public FakeMap(byte[] pixels) {
+        this.id = getNextId();
+        this.pixels = pixels;
+        LOGGER.fine("Created FakeMap#" + this.id);
+    }
+
+    /**
      * Get next unused map ID
+     *
      * @return Next unused map ID
      */
     private static int getNextId() {
@@ -43,8 +75,9 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Pixel to Minecraft color index
-     * @param  pixel RGBA pixel value
-     * @return       Closest Minecraft color index
+     *
+     * @param pixel RGBA pixel value
+     * @return Closest Minecraft color index
      */
     @SuppressWarnings("deprecation")
     public static byte pixelToIndex(int pixel) {
@@ -53,6 +86,7 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Get map instance to show in case of error
+     *
      * @return Error instance
      */
     private static @NotNull FakeMap getErrorInstance() {
@@ -66,12 +100,13 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Get matrix of error maps
-     * @param  width  Width in blocks
-     * @param  height Height in blocks
-     * @return        Fake maps
+     *
+     * @param width  Width in blocks
+     * @param height Height in blocks
+     * @return Fake maps
      */
     public static @NotNull FakeMap[][][] getErrorMatrix(int width, int height) {
-        FakeMap[] errorMaps = new FakeMap[] {getErrorInstance()};
+        FakeMap[] errorMaps = new FakeMap[]{getErrorInstance()};
         FakeMap[][][] matrix = new FakeMap[width][height][1];
         for (FakeMap[][] column : matrix) {
             Arrays.fill(column, errorMaps);
@@ -80,36 +115,8 @@ public class FakeMap extends FakeEntity {
     }
 
     /**
-     * Class constructor
-     * @param pixels   Array of Minecraft color indexes
-     * @param scanSize Original image width
-     * @param startX   Initial X pixel coordinate
-     * @param startY   Initial Y pixel coordinate
-     */
-    public FakeMap(byte[] pixels, int scanSize, int startX, int startY) {
-        this.id = getNextId();
-
-        // Copy square of pixels to this instance
-        this.pixels = new byte[DIMENSION*DIMENSION];
-        for (int y=0; y<DIMENSION; y++) {
-            System.arraycopy(pixels, startX+(startY+y)*scanSize, this.pixels, y*DIMENSION, DIMENSION);
-        }
-
-        LOGGER.fine("Created FakeMap#" + this.id);
-    }
-
-    /**
-     * Class constructor
-     * @param pixels Array of Minecraft color indexes
-     */
-    public FakeMap(byte[] pixels) {
-        this.id = getNextId();
-        this.pixels = pixels;
-        LOGGER.fine("Created FakeMap#" + this.id);
-    }
-
-    /**
      * Get map ID
+     *
      * @return Map ID
      */
     public int getId() {
@@ -118,6 +125,7 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Get raw pixels
+     *
      * @return Array of Minecraft color indexes
      */
     public byte[] getPixels() {
@@ -126,8 +134,9 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Request re-send of map pixels
-     * @param  player Player who is expected to receive pixels
-     * @return        Whether re-send authorization was granted or not
+     *
+     * @param player Player who is expected to receive pixels
+     * @return Whether re-send authorization was granted or not
      */
     public boolean requestResend(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
@@ -135,7 +144,7 @@ public class FakeMap extends FakeEntity {
 
         // Has enough time passed since last re-send?
         long last = lastPlayerSendTime.getOrDefault(uuid, 0L);
-        if ((now-last) <= RESEND_THRESHOLD && (player.getLastPlayed()/1000) < last) {
+        if ((now - last) <= RESEND_THRESHOLD && (player.getLastPlayed() / 1000) < last) {
             return false;
         }
 
@@ -147,6 +156,7 @@ public class FakeMap extends FakeEntity {
 
     /**
      * Get map pixels packet
+     *
      * @return Map pixels packet
      */
     public @NotNull WrapperPlayServerMapData getPixelsPacket() {

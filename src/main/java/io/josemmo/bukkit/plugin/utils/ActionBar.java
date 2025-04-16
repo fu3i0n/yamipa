@@ -1,6 +1,5 @@
 package io.josemmo.bukkit.plugin.utils;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerActionBar;
 import io.josemmo.bukkit.plugin.YamipaPlugin;
 import net.kyori.adventure.text.Component;
@@ -25,6 +24,7 @@ public class ActionBar {
 
     /**
      * Send action bar message
+     *
      * @param player  Player who will receive the message
      * @param message Message to send
      */
@@ -35,9 +35,10 @@ public class ActionBar {
 
     /**
      * Keep sending action bar message
-     * @param  player  Player who will receive the message
-     * @param  message Message to send
-     * @return         New instance
+     *
+     * @param player  Player who will receive the message
+     * @param message Message to send
+     * @return New instance
      */
     public static @NotNull ActionBar repeat(@NotNull Player player, @NotNull String message) {
         ActionBar instance = new ActionBar(player, message);
@@ -47,8 +48,9 @@ public class ActionBar {
 
     /**
      * Set message
-     * @param  message Message
-     * @return         This instance
+     *
+     * @param message Message
+     * @return This instance
      */
     public ActionBar setMessage(@NotNull String message) {
         this.message = message;
@@ -57,6 +59,7 @@ public class ActionBar {
 
     /**
      * Clear message
+     *
      * @return This instance
      */
     public ActionBar clear() {
@@ -67,6 +70,7 @@ public class ActionBar {
 
     /**
      * Send message once
+     *
      * @return This instance
      */
     public ActionBar sendOnce() {
@@ -84,6 +88,7 @@ public class ActionBar {
 
     /**
      * Start sending message indefinitely
+     *
      * @return This instance
      */
     public ActionBar start() {
@@ -95,6 +100,7 @@ public class ActionBar {
 
     /**
      * Stop sending message indefinitely
+     *
      * @return This instance
      */
     public ActionBar stop() {

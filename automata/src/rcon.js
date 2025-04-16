@@ -1,11 +1,11 @@
-import { Rcon } from 'rcon-client'
-import { wait } from './common.js'
+import {Rcon} from 'rcon-client'
+import {wait} from './common.js'
 
 const CONNECTION = {
     host: '127.0.0.1',
     port: 25575,
     password: 'rcon',
-    timeout: 1000*20,
+    timeout: 1000 * 20,
 }
 
 export async function waitForServer() {

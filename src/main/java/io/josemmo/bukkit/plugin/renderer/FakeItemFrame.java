@@ -36,20 +36,8 @@ public class FakeItemFrame extends FakeEntity {
     private final FakeMap[] maps;
 
     /**
-     * Get next unused item frame ID
-     * @return Next unused item frame ID
-     */
-    private static int getNextId() {
-        return LAST_FRAME_ID.updateAndGet(lastId -> {
-            if (lastId == MAX_FRAME_ID) {
-                return MIN_FRAME_ID;
-            }
-            return lastId + 1;
-        });
-    }
-
-    /**
      * Class constructor
+     *
      * @param location Frame location
      * @param face     Block face
      * @param rotation Frame rotation
@@ -73,7 +61,22 @@ public class FakeItemFrame extends FakeEntity {
     }
 
     /**
+     * Get next unused item frame ID
+     *
+     * @return Next unused item frame ID
+     */
+    private static int getNextId() {
+        return LAST_FRAME_ID.updateAndGet(lastId -> {
+            if (lastId == MAX_FRAME_ID) {
+                return MIN_FRAME_ID;
+            }
+            return lastId + 1;
+        });
+    }
+
+    /**
      * Get frame ID
+     *
      * @return Frame ID
      */
     public int getId() {
@@ -82,6 +85,7 @@ public class FakeItemFrame extends FakeEntity {
 
     /**
      * Get entity spawn packet
+     *
      * @return Spawn packet
      */
     public @NotNull WrapperPlayServerSpawnEntity getSpawnPacket() {
@@ -140,6 +144,7 @@ public class FakeItemFrame extends FakeEntity {
 
     /**
      * Get frame of animation packets
+     *
      * @param player Player who is expected to receive packets (for caching reasons)
      * @param step   Map step
      */
@@ -171,6 +176,7 @@ public class FakeItemFrame extends FakeEntity {
 
     /**
      * Get destroy item frame packet
+     *
      * @return Destroy packet
      */
     public @NotNull WrapperPlayServerDestroyEntities getDestroyPacket() {

@@ -9,11 +9,13 @@ import io.josemmo.bukkit.plugin.storage.ImageFile;
 import io.josemmo.bukkit.plugin.storage.ImageStorage;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.CompletableFuture;
 
 public class ImageFileArgument extends StringArgument {
     /**
      * Image File Argument constructor
+     *
      * @param name Argument name
      */
     public ImageFileArgument(@NotNull String name) {
