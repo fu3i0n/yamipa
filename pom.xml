@@ -16,8 +16,8 @@
 
     <repositories>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
@@ -35,30 +35,35 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <!-- https://hub.spigotmc.org/nexus/content/groups/public/org/spigotmc/spigot-api/ -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.21.1-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://jitpack.io/com/github/dmulloy2/ProtocolLib/ -->
-        <dependency>
-            <groupId>com.github.dmulloy2</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>1e3fa2d36e</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- https://github.com/Mojang/brigadier/releases -->
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>brigadier</artifactId>
             <version>1.0.18</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents-spigot</artifactId>
+            <version>2.7.0</version>
             <scope>provided</scope>
         </dependency>
 
